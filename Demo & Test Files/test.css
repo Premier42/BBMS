@@ -1,5 +1,6 @@
 /* General Styles */
 
+
 body {
     font-family: Arial, sans-serif;
     color: #333;
@@ -32,10 +33,12 @@ h1, h2, h3, h4, h5, h6 {
 img {
     max-width: 100%;
     height: auto;
-}
+}               /*End of General Styles*/
+
 
 
 /* Header and Navigation Menu */
+
 
 #header {
     background: #fff;
@@ -59,27 +62,30 @@ img {
 
 #header .navbar-nav .nav-link:hover {
     color: #ff4d4d;
-}
+}                 /*End of Header & Navigation Menu*/
+
 
 
 /* Hero Section */
 
+
 #hero {
-    background: url('path/to/your/hero-image.jpg') center center;
-    background-size: cover;
+    background: #fff; 
     padding: 100px 0;
-    color: #ff4d4d;
     text-align: left;
+    color: #ff4d4d; 
 }
 
 #hero h1 {
     font-size: 48px;
     margin-bottom: 20px;
+    color: #ff4d4d; 
 }
 
 #hero h2 {
     font-size: 24px;
     margin-bottom: 30px;
+    color: #ff4d4d; 
 }
 
 #hero .btn-get-started {
@@ -87,14 +93,29 @@ img {
     color: #fff;
     padding: 10px 25px;
     border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.3s ease;
 }
 
 #hero .btn-get-started:hover {
     background: #d63031;
 }
 
+.hero-img {
+    max-width: 100%;
+    height: auto;
+}
+
+.img-fluid.animated {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto; 
+}               /*End of Hero Section*/
+
 
 /* Sections */
+
 
 section {
     padding: 60px 0;
@@ -118,69 +139,120 @@ section {
 
 .section-bg {
     background: #f9f9f9;
-}
+}                 /*End of Sections*/
 
 
 /* Services Section */
 
+
 .services .icon-box {
-    background: #fff;
     border-radius: 8px;
     padding: 30px;
     text-align: center;
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    color: #fff; 
+}
+
+.services .service-box-1 {
+    background-color: #4db8ff; 
+}
+
+.services .service-box-2 {
+    background-color: #4caf50; 
+}
+
+.services .service-box-3 {
+    background-color: #f3cd21; 
 }
 
 .services .icon-box .icon {
     font-size: 48px;
-    color: #ff4d4d;
+    color: #fff; 
     margin-bottom: 20px;
+    transition: transform 0.3s ease-in-out;
 }
 
-.services .icon-box h4 {
-    font-size: 20px;
-    margin-bottom: 15px;
-    font-weight: bold;
+.services .icon-box h4 a {
+    color: #fff; 
+    transition: color 0.3s ease-in-out;
 }
 
 .services .icon-box p {
     font-size: 14px;
+    color: #fff; 
     margin-bottom: 0;
+    transition: color 0.3s ease-in-out;
 }
 
-
-/* Looking for Blood Section */
-
-
-.looking-for-blood .row {
-    display: flex;
-    flex-direction: column; /* Arrange items in a column */
-    align-items: center; /* Center align items */
+.services .icon-box:hover {
+    transform: translateY(-10px);
 }
 
-.looking-for-blood .col-lg-6 {
-    margin-bottom: 20px; /* Add some spacing between elements */
+.services .icon-box:hover .icon {
+    transform: scale(1.1);
 }
+
+.services .icon-box:hover h4 a,
+.services .icon-box:hover p {
+    color: #f1f1f1;
+}
+
+/* Section Title Text */
+.services .section-title p {
+    font-size: 35px; 
+    font-weight: bold; 
+    color:#d63031;
+    animation: floatText 2s ease-in-out infinite; 
+}
+
+/* Keyframes for floating text effect */
+@keyframes floatText {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}                         /*End of Service Section*/
+
+
+
+/*looking for blood section*/
+
 
 .looking-for-blood .icon-box {
-    background: #f9f9f9;
+    background:#d63031; 
     border-radius: 8px;
     padding: 30px;
     text-align: left;
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Ensure the box takes full width */
-    max-width: 600px; /* Optional: limit the maximum width */
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1); 
+    width: 100%;
+    max-width: 600px;
+    margin-top: 40px;
+    margin-left: auto;
+    color: #fff; 
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
 }
 
 .looking-for-blood .icon-box h3 {
     font-size: 24px;
     margin-bottom: 15px;
-    text-align: left;
+    color: #fff; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+    display: flex;
+    align-items: center;
+}
+
+.looking-for-blood .icon-box h3 i {
+    margin-right: 10px; 
 }
 
 .looking-for-blood .icon-box p {
     font-size: 16px;
     margin-bottom: 20px;
+    color: #fff;
 }
 
 .looking-for-blood .icon-box ul {
@@ -190,83 +262,143 @@ section {
 .looking-for-blood .icon-box ul li {
     font-size: 14px;
     margin-bottom: 10px;
+    color: #fff; 
+    display: flex;
+    align-items: center;
 }
 
+.looking-for-blood .icon-box ul li i {
+    margin-right: 10px; 
+}
+
+.looking-for-blood .icon-box:hover {
+    background:#ff4d4d; 
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); 
+    transform: translateY(-5px); 
+    color: #ffebee; 
+}
+
+.looking-for-blood .icon-box:hover h3,
+.looking-for-blood .icon-box:hover p,
+.looking-for-blood .icon-box:hover ul li {
+    color: #ffebee; 
+}
+
+.looking-for-blood .icon-box:hover .fa-search {
+    color: #ffebee; 
+}
+
+/*title text styling*/
+.looking-for-blood .section-title p {
+    font-size: 35px;
+    font-weight: bold; 
+    color: #d63031; 
+    animation: floatText 2s ease-in-out infinite; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
+}
+
+/* Keyframes for floating text effect */
+@keyframes floatText {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Styling for the left-side image */
 .looking-for-blood .img-fluid {
-    max-width: 100%;
+    max-width: 100%; 
     height: auto;
-    border-radius: 8px; /* Match the border-radius of the icon-box */
-}
+    border-radius: 8px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1); 
+    margin-top: 40px; 
+}                                 /* End of Looking for Blood Section */
 
-.looking-for-blood .section-title {
-    text-align: center; /* Center the section title */
-    margin-bottom: 40px; /* Add spacing below the title */
-}
-
-.looking-for-blood h3 i {
-    margin-right: 10px; /* Add spacing between icon and text */
-}
 
 
 /* Want to Donate Blood Section */
 
+
 .donate .row {
     display: flex;
-    align-items: stretch; /* Ensure items are stretched to the same height */
+    align-items: stretch; 
 }
 
 .donate .content {
-    padding-left: 30px; /* Add padding for content */
+    padding-left: 30px; 
 }
 
 .donate .btn-get-started {
     background: #ff4d4d;
     color: #fff;
-    padding: 10px 20px; /* Adjust padding for a smaller button */
+    padding: 10px 20px; 
     border-radius: 4px;
     text-align: center;
-    text-decoration: none; /* Ensure no underline */
-    display: block; /* Ensure button behaves correctly as a block element */
-    width: fit-content; /* Make button width fit its content */
-    margin: 20px auto 0; /* Center button below the boxes with top margin */
+    text-decoration: none;
+    display: block; 
+    width: fit-content; 
+    margin: 20px auto 0; 
+    transition: background-color 0.3s ease-in-out; 
 }
 
 .donate .btn-get-started:hover {
-    background: #d63031;
+    background: #d63031; 
 }
 
 .donate-box, .how-to-donate {
-    background: #f9f9f9;
+    background: #f9f9f9; 
     border-radius: 8px;
     padding: 30px;
     text-align: left;
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Ensure content is spread out evenly */
-    height: 100%; /* Ensure both boxes take up full height */
+    justify-content: space-between; 
+    height: 100%; 
+    transition: box-shadow 0.3s ease-in-out; 
+}
+
+.donate-box:hover, .how-to-donate:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); 
 }
 
 .donate h3, .how-to-donate h3 {
     font-size: 24px;
     margin-bottom: 15px;
     display: flex;
-    align-items: center; /* Align icon vertically in the middle */
+    align-items: center; 
+    color: #333;
 }
 
 .donate-box p, .how-to-donate p {
     font-size: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    color: #666; 
+    transition: color 0.3s ease-in-out; 
+}
+
+.donate-box p:hover, .how-to-donate p:hover {
+    color: #d63031; 
+    font-weight: bold;
 }
 
 .donate-box ul, .how-to-donate ol {
     padding-left: 20px;
-    margin-top: 10px; /* Adjust margin */
+    margin-top: 10px; 
 }
 
 .donate-box ul li, .how-to-donate ol li {
     font-size: 14px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    color: #777; 
+    transition: color 0.3s ease-in-out; /
+}
+
+.donate-box ul li:hover, .how-to-donate ol li:hover {
+    color: #d63031; 
+    font-weight: bold; 
 }
 
 .row.justify-content-center {
@@ -276,17 +408,24 @@ section {
 }
 
 .donate h3 i, .how-to-donate h3 i {
-    margin-right: 10px; /* Add spacing between icon and text */
-}
+    margin-right: 10px; 
+}                             /* End of Want to Donate Blood Section */
+
 
 
 
 /* Learn About Donation Section */
 
+
 .learn .table {
     width: 100%;
-    margin-top: 30px;
+    margin: 30px auto; 
     border: 1px solid #ccc;
+    background-color:#ff4d4d; 
+    border-radius: 8px; 
+    overflow: hidden; 
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1); 
+    table-layout: fixed; 
 }
 
 .learn .table th,
@@ -294,10 +433,65 @@ section {
     padding: 10px;
     text-align: center;
     border: 1px solid #ccc;
+    font-size: 16px; 
 }
+
+.learn .table th {
+    background-color: #f8f9fa; 
+    font-weight: bold; 
+    color: #333;
+}
+
+.learn .table tbody tr:nth-child(odd) {
+    background-color: #f2f2f2; 
+}
+
+.learn .table tbody tr:hover {
+    background-color: #f1f1f1; 
+}
+
+.learn .section-title p {
+    font-size: 35px; 
+    font-weight: bold; 
+    color: #d63031; 
+    animation: floatText 2s ease-in-out infinite; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
+}
+
+@keyframes floatText {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.learn .col-lg-6 {
+    padding: 15px; 
+}
+
+/* Style for the image on the right */
+
+.learn .img-fluid {
+    max-width: 600px; 
+    height: auto; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1); 
+    margin-left: 20px; 
+    margin-right: -250px;
+    transition: transform 0.3s ease; 
+}
+
+.learn .img-fluid:hover {
+    transform: scale(1.05); 
+}
+/* End of Learn abt Donation Section  */
+
 
 
 /* Meet the Developers Section */
+
 
 .meet-developers .row {
     display: flex;
@@ -308,7 +502,7 @@ section {
 .member {
     background: #fff;
     border-radius: 8px;
-    padding: 20px;
+    padding: 10px;
     margin-bottom: 30px;
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -335,6 +529,39 @@ section {
     color: #6c757d;
 }
 
+/* Adjustments for smaller screens */
+@media (max-width: 991px) {
+    .meet-developers .col-md-4 {
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    .meet-developers .col-sm-6 {
+        margin-bottom: 30px;
+    }
+}
+
+.meet-developers .section-title p {
+    font-size: 35px; 
+    font-weight: bold; 
+    color: #d63031; 
+    animation: floatText 2s ease-in-out infinite; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
+
+}
+
+
+@keyframes floatText {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}       /* End of Meet the developers Section  */  
+
+
 
 
 /* Our Roles Section */
@@ -345,14 +572,14 @@ section {
     padding: 30px;
     text-align: left;
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px; /* Add margin bottom for spacing */
+    margin-bottom: 30px; 
 }
 
 .roles .icon-box .row > div {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px; /* Add spacing between columns */
+    margin-bottom: 20px; 
 }
 
 .roles .icon-box .icon {
@@ -372,10 +599,29 @@ section {
     font-size: 14px;
     text-align: center;
     margin-bottom: 0;
+}    
+
+.roles .section-title p{
+    font-size: 35px; 
+    font-weight: bold; 
+    color: #d63031; 
+    animation: floatText 2s ease-in-out infinite; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
 }
+
+@keyframes floatText {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}   
+/* End of Our Roles Section */
 
 
 /* Responsive adjustments for small screens */
+
 
 @media (max-width: 768px) {
     .looking-for-blood .row,
@@ -397,10 +643,11 @@ section {
 
 
 /* Footer */
+
 #footer {
     background: #333;
     color: #fff;
     padding: 30px 0;
     text-align: center;
-}
+}                        /* End of Footer */
 
