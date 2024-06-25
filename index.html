@@ -1,43 +1,460 @@
-!<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>BBMS</title>
-        <!-- Required meta tags -->
-        <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-        <link rel="stylesheet" href="assets/css/index_styles.css" />
-        <!-- Bootstrap CSS v5.2.1 -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous"
-        />
-    </head>
 
-    <body>
-        <header>
-            <!-- place navbar here -->
-        </header>
-        <main></main>
-        <footer>
-            <!-- place footer here -->
-        </footer>
-        <!-- Bootstrap JavaScript Libraries -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"
-        ></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>CRUDCare Blood Bank</title>
 
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-            crossorigin="anonymous"
-        ></script>
-        <script src="assets/js/index.js"></script>
-    </body>
+    <!-- Bootstrap CSS v5.3.2 -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="assets/css/index.css">
+</head>
+
+<body>
+
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center justify-content-between">
+
+            <!-- Logo -->
+            <!-- missing logo !important -->
+            <a href="" class="logo"><img src="" alt="" class="img-fluid"></a>
+
+
+            <!-- Navbar -->
+
+            <nav id="navbar" class="navbar navbar-expand-lg navbar-expand-md">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link scrollto" href="#hero">Home</a></li>
+                        <li class="nav-item"><a class="nav-link scrollto" href="#services">Services</a></li>
+                        <li class="nav-item"><a class="nav-link scrollto" href="#looking-for-blood">Looking for
+                                Blood</a></li>
+                        <li class="nav-item"><a class="nav-link scrollto" href="#donate-blood">Want to Donate Blood</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link scrollto" href="#learn-about-donation">Learn About
+                                Donation</a></li>
+                        <li class="nav-item"><a class="nav-link scrollto" href="#meet-developers">Meet the
+                                Developers</a></li>
+                        <li class="nav-item"><a class="nav-link scrollto" href="#roles">Our Roles</a></li>
+
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+
+
+    <!-- Hero section -->
+
+
+    <section id="hero" class="d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 pt-5 pt-lg-0 order-2 order-lg-1 d-flex flex-column justify-content-center">
+                    <h1>Save Lives by Donating Blood</h1>
+                    <h2>Your blood can give someone a new lease on life</h2>
+                    <div class="d-flex">
+                        <a href="sections/auth/login.php" class="btn-get-started scrollto">Donate Now</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 order-1 order-lg-2 hero-img">
+                    <img src="assets/Images/Hero Section.png" class="img-fluid animated"
+                        alt="Blood Donation Illustration">
+                </div>
+            </div>
+        </div>
+    </section> <!--End Hero Section-->
+
+    <main id="main">
+        <!-- Services Section -->
+        <section id="services" class="services section-bg">
+            <div class="container">
+                <div class="section-title">
+                    <span>Services</span>
+                    <h2>Services</h2>
+                    <p>Our services ensure safe and effective blood transfusion processes</p>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                        <div class="icon-box service-box-1">
+                            <div class="icon"><i class="bx bx-data"></i></div>
+                            <h4><a href="sections/auth/login.php">Blood Data Management</a></h4>
+                            <p>Comprehensive data management for blood donations, storage, and distribution.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
+                        <div class="icon-box service-box-2">
+                            <div class="icon"><i class="bx bx-bar-chart"></i></div>
+                            <h4><a href="sections/auth/login.php">Tracking and Reporting</a></h4>
+                            <p>Real-time tracking and detailed reporting of blood inventory and donor activities.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0">
+                        <div class="icon-box service-box-3">
+                            <div class="icon"><i class="bx bx-shield"></i></div>
+                            <h4><a href="sections/auth/login.php">Emergency Blood Supply</a></h4>
+                            <p>Rapid response to emergency blood requests</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- End Services Section -->
+
+
+
+        <!-- Looking for Blood Section -->
+
+        <section id="looking-for-blood" class="looking-for-blood section-bg">
+            <div class="container">
+                <div class="section-title">
+                    <span>Looking for Blood</span>
+                    <h2>Looking for Blood</h2>
+                    <p>Find the blood you need with our easy-to-use system</p>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-lg-6 d-flex justify-content-center">
+                        <img src="/assets/Images/looking for blod section.png" class="img-fluid" alt="Left Image">
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="icon-box">
+                            <h3><i class="fa fa-search"></i> How to Find Blood</h3>
+                            <p class="fst-italic">
+                                Use our system to quickly and easily find the blood you need:
+                            </p>
+                            <ul>
+                                <li><i class="bi fs-5 text-primary bi-check-circle"></i> Register or log in to your
+                                    account</li>
+                                <li><i class="bi fs-5 text-primary bi-check-circle"></i> Search for the required blood
+                                    type</li>
+                                <li><i class="bi fs-5 text-primary bi-check-circle"></i> Contact the donor or blood bank
+                                </li>
+                            </ul>
+                            <p>
+                                Our system ensures a fast and reliable way to get the blood you need.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- End Looking for Blood Section -->
+
+
+
+        <!-- Want to Donate Blood Section -->
+
+        <section class="donate section-bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="donate-box">
+                            <h3><i class="fa fa-heart"></i> Want to Donate Blood?</h3>
+                            <p>Join our cause and donate blood to save lives</p>
+                            <ul>
+                                <li><i class="fa fa-check-circle"></i> Check your eligibility to donate.</li>
+                                <li><i class="fa fa-check-circle"></i> Find a blood donation center near you.</li>
+                                <li><i class="fa fa-check-circle"></i> Prepare yourself for donation day.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="how-to-donate">
+                            <h3><i class="fa fa-info-circle"></i> How to Donate Blood</h3>
+                            <p>Follow these simple steps to donate blood and save lives:</p>
+                            <ol>
+                                <li>Register yourself at a blood donation center.</li>
+                                <li>Fill out a donor history questionnaire.</li>
+                                <li>Undergo a mini-physical to check your vitals.</li>
+                                <li>Donate blood and receive refreshments afterwards.</li>
+                            </ol>
+                            <p>Your contribution can save lives. Be a hero, donate blood.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <a href="sections/auth/register.php" class="btn-get-started scrollto">Register Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- End Want to Donate Blood Section -->
+
+
+
+        <!-- Learn About Donation Section -->
+
+        <section id="learn-about-donation" class="learn section-bg">
+            <div class="container">
+                <div class="section-title">
+                    <span>Learn About Donation</span>
+                    <h2>Learn About Donation</h2>
+                    <p>Understand the process and compatibility of blood donation</p>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-lg-6">
+                        <h3>Blood Group Compatibility</h3>
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Blood Type</th>
+                                    <th>Can Donate To</th>
+                                    <th>Can Receive From</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>A+</td>
+                                    <td>A+, AB+</td>
+                                    <td>A+, A-, O+, O-</td>
+                                </tr>
+                                <tr>
+                                    <td>O+</td>
+                                    <td>O+, A+, B+, AB+</td>
+                                    <td>O+, O-</td>
+                                </tr>
+                                <tr>
+                                    <td>B+</td>
+                                    <td>B+, AB+</td>
+                                    <td>B+, B-, O+, O-</td>
+                                </tr>
+                                <tr>
+                                    <td>AB+</td>
+                                    <td>AB+</td>
+                                    <td>All Blood Types</td>
+                                </tr>
+                                <tr>
+                                    <td>A-</td>
+                                    <td>A-, A+, AB-, AB+</td>
+                                    <td>A-, O-</td>
+                                </tr>
+                                <tr>
+                                    <td>O-</td>
+                                    <td>All Blood Types</td>
+                                    <td>O-</td>
+                                </tr>
+                                <tr>
+                                    <td>B-</td>
+                                    <td>B-, B+, AB-, AB+</td>
+                                    <td>B-, O-</td>
+                                </tr>
+                                <tr>
+                                    <td>AB-</td>
+                                    <td>AB-, AB+</td>
+                                    <td>AB-, A-, B-, O-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-lg-6 d-flex justify-content-center align-items-center">
+                        <div class="image-container">
+                            <img src="assets/Images/CompatibilityTable.png" class="img-fluid" alt="Blood Donation">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Learn About Donation Section -->
+        <!-- Meet the Developers Section -->
+        <section id="meet-the-developers" class="meet-developers">
+            <div class="container">
+                <div class="section-title">
+                    <span>Meet the Developers</span>
+                    <h2>Meet the Developers</h2>
+                    <p>Our talented team of developers who make it all possible</p>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2 col-md-4 col-sm-6 d-flex align-items-stretch">
+                        <div class="member">
+                            <img src="assets/Images/1" alt="">
+                            <h4>John Doe</h4>
+                            <span>Lead Developer</span>
+                            <p>
+                                John is the lead developer and oversees the project. He ensures that the development
+                                process runs smoothly.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 d-flex align-items-stretch">
+                        <div class="member">
+                            <img src="assets/Images/2.jpg" alt="">
+                            <h4>Jane Smith</h4>
+                            <span>UI/UX Designer</span>
+                            <p>
+                                Jane designs the user interfaces and experiences for the application. Her designs make
+                                sure that the application is user-friendly.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 d-flex align-items-stretch">
+                        <div class="member">
+                            <img src="assets/Images/3.jpg" alt="">
+                            <h4>Mike Johnson</h4>
+                            <span>Backend Developer</span>
+                            <p>
+                                Mike handles the server-side logic and database management. He ensures the application
+                                is robust and scalable.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 d-flex align-items-stretch">
+                        <div class="member">
+                            <img src="assets/Images/4.jpg" alt="">
+                            <h4>Emily Davis</h4>
+                            <span>Database Specialist</span>
+                            <p>
+                                Emily manages our database systems, ensuring data integrity and security. She optimizes
+                                the database for performance and reliability.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 d-flex align-items-stretch">
+                        <div class="member">
+                            <img src="assets/Images/5.jpg" alt="">
+                            <h4>Robert Wilson</h4>
+                            <span>Quality Assurance</span>
+                            <p>
+                                Robert is responsible for testing and quality assurance. He makes sure that our system
+                                meets the highest standards of quality.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- End Meet the Developers Section -->
+
+        <!-- Our Roles Section -->
+
+        <section id="roles" class="roles section-bg">
+            <div class="container">
+                <div class="section-title">
+                    <span>Our Roles</span>
+                    <h2>Our Roles</h2>
+                    <p>Learn about the different roles involved in our blood bank system</p>
+                </div>
+                <div class="icon-box">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4">
+                            <div class="icon"><i class="bx bx-heart"></i></div>
+                            <h4>Donor</h4>
+                            <p>Individuals who donate blood to save lives.</p>
+                        </div>
+                        <div class="col-lg-3 col-md-4">
+                            <div class="icon"><i class="bx bx-droplet"></i></div>
+                            <h4>Blood Unit</h4>
+                            <p>Blood units collected from donors and stored for use.</p>
+                        </div>
+                        <div class="col-lg-3 col-md-4">
+                            <div class="icon"><i class="bx bx-user"></i></div>
+                            <h4>Recipient</h4>
+                            <p>Patients who receive blood transfusions.</p>
+                        </div>
+                        <div class="col-lg-3 col-md-4">
+                            <div class="icon"><i class="bx bx-test-tube"></i></div>
+                            <h4>Lab Technician</h4>
+                            <p>Technicians who test and process blood samples.</p>
+                        </div>
+                        <div class="col-lg-3 col-md-4">
+                            <div class="icon"><i class="bx bx-layer"></i></div>
+                            <h4>Inventory Manager</h4>
+                            <p>Managers who oversee the blood inventory and ensure its proper storage.</p>
+                        </div>
+                        <div class="col-lg-3 col-md-4">
+                            <div class="icon"><i class="bx bx-hospital"></i></div>
+                            <h4>Hospital Representative</h4>
+                            <p>Hospital staff responsible for coordinating with the blood bank.</p>
+                        </div>
+                        <div class="col-lg-3 col-md-4">
+                            <div class="icon"><i class="bx bx-cog"></i></div>
+                            <h4>Admin</h4>
+                            <p>Admins who manage the entire blood bank system and ensure its smooth operation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Our Roles Section -->
+
+    </main>
+    <!-- Footer -->
+    <footer id="footer" class="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 footer-contact">
+                        <h3>CRUDCare</h3>
+                        <p>Your partner in saving lives</p>
+                        <p>
+                            123 Street Name <br>
+                            City, State, ZIP Code<br>
+                            Country <br><br>
+                            <strong>Phone:</strong> +1 234 567 890<br>
+                            <strong>Email:</strong> info@example.com<br>
+                        </p>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 footer-links">
+                        <h4>Useful Links</h4>
+                        <ul>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#hero">Home</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#services">Services</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#looking-for-blood">Looking for Blood</a>
+                            </li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#donate-blood">Want to Donate Blood</a>
+                            </li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#learn-about-donation">Learn About
+                                    Donation</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#meet-developers">Meet the Developers</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 footer-links">
+                        <h4>Our Services</h4>
+                        <ul>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Blood Data Management</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Tracking and Reporting</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Emergency Blood Supply</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center py-3">
+                    &copy; Copyright <strong><span>CRUDCare Blood Bank</span></strong>. All Rights Reserved
+                </div>
+            </div>
+        </div>
+    </footer><!-- End Footer -->
+    <!-- Back to top button -->
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+    <!-- Bootstrap JS v5.3.2 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-VzY0WLeAW/xwA4P6u95b5MW7sZm4KCS8hu1whJ7gIVwG1x0pB0Yg5JitYFDFV8wj"
+        crossorigin="anonymous"></script>
+
+</body>
+
 </html>
