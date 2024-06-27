@@ -530,6 +530,7 @@ section {
 }
 
 /* Adjustments for smaller screens */
+
 @media (max-width: 991px) {
     .meet-developers .col-md-4 {
         margin-bottom: 30px;
@@ -559,65 +560,9 @@ section {
     50% {
         transform: translateY(-5px);
     }
-}       /* End of Meet the developers Section  */  
+}       
 
-
-
-
-/* Our Roles Section */
-
-.roles .icon-box {
-    background: #fff;
-    border-radius: 8px;
-    padding: 30px;
-    text-align: left;
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px; 
-}
-
-.roles .icon-box .row > div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px; 
-}
-
-.roles .icon-box .icon {
-    font-size: 48px;
-    color: #ff4d4d;
-    margin-bottom: 10px;
-}
-
-.roles .icon-box h4 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    font-weight: bold;
-    text-align: center;
-}
-
-.roles .icon-box p {
-    font-size: 14px;
-    text-align: center;
-    margin-bottom: 0;
-}    
-
-.roles .section-title p{
-    font-size: 35px; 
-    font-weight: bold; 
-    color: #d63031; 
-    animation: floatText 2s ease-in-out infinite; 
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
-}
-
-@keyframes floatText {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-5px);
-    }
-}   
-/* End of Our Roles Section */
+/* End of Meet the developers Section  */  
 
 
 /* Responsive adjustments for small screens */
@@ -642,6 +587,7 @@ section {
 }
 
 
+
 /* Footer */
 
 #footer {
@@ -649,5 +595,8 @@ section {
     color: #fff;
     padding: 30px 0;
     text-align: center;
-}                        /* End of Footer */
+}                        
+
+/* End of Footer */
+
 
