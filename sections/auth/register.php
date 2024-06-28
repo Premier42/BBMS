@@ -1,7 +1,7 @@
 <?php
 session_start();
- // Include your database configuration file
- require_once '../../config/database.php';
+// Include your database configuration file
+require_once '../../config/database.php';
 
 // Include role privileges
 require_once '../../config/role_privileges.php';
@@ -27,49 +27,66 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Hash the password
-    $password_hash = password_hash($password, PASSWORD_BCRYPT);
+    // Check if the username already exists
+    $sql_check_username = "SELECT COUNT(*) as count FROM users WHERE username = ?";
+    $stmt_check_username = $conn->prepare($sql_check_username);
+    $stmt_check_username->bind_param("s", $username);
+    $stmt_check_username->execute();
+    $result_check_username = $stmt_check_username->get_result();
+    $row = $result_check_username->fetch_assoc();
+    $stmt_check_username->close();
 
-    // Modify your existing registration logic to set 'approved' based on role
-    if ($role == 'lab_technician' || $role == 'inventory_manager' || $role == 'hospital_rep' || $role == 'admin') {
-        $approved = 0; // Initial approval status set to false (0 in MySQL)
+    if ($row['count'] > 0) {
+        echo "<div class='alert alert-danger'>Username already taken. Please choose a different username.</div>";
     } else {
-        $approved = 1; // Roles like 'donor', 'recipient' are approved immediately (1 in MySQL)
-    }
+        // Hash the password
+        $password_hash = password_hash($password, PASSWORD_BCRYPT);
 
-    // Prepare SQL query to insert user data
-    $sql = "INSERT INTO users (username, password_hash, role, email, phone_number, address, approved)
-            VALUES (?, ?, ?, ?, ?, ?, ?)";
-    
-    if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("ssssssi", $username, $password_hash, $role, $email, $phone_number, $address, $approved);
-
-        // Execute the statement
-        if ($stmt->execute()) {
-            // Registration successful message
-            echo "<div class='alert alert-success'>Registration successful. ";
-
-            // Retrieve the last inserted ID
-            $last_inserted_id = $stmt->insert_id;
-
-            // Check if approval is needed
-            if ($approved == 0) {
-                echo "Waiting for admin approval.</div>";
-            } else {
-                // Store user role and privileges in session
-                $_SESSION['user_id'] = $last_inserted_id;
-                $_SESSION['username'] = $username;
-                $_SESSION['role'] = $role;
-                $_SESSION['privileges'] = $rolePrivileges[$role];
-
-                echo "Redirecting to login page...</div>";
-                header("refresh:3;url=login.php");
-            }
+        // Modify your existing registration logic to set 'approved' based on role
+        if ($role == 'lab_technician' || $role == 'inventory_manager' || $role == 'hospital_rep' || $role == 'admin') {
+            $approved = 0; // Initial approval status set to false (0 in MySQL)
+        } else {
+            $approved = 1; // Roles like 'donor', 'recipient' are approved immediately (1 in MySQL)
         }
-    }
-     else {
-        // Error message if SQL preparation fails
-        echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
+
+        // Prepare SQL query to insert user data
+        $sql = "INSERT INTO users (username, password_hash, role, email, phone_number, address, approved)
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("ssssssi", $username, $password_hash, $role, $email, $phone_number, $address, $approved);
+
+            // Execute the statement
+            if ($stmt->execute()) {
+                // Registration successful message
+                echo "<div class='alert alert-success'>Registration successful. ";
+
+                // Retrieve the last inserted ID
+                $last_inserted_id = $stmt->insert_id;
+
+                // Check if approval is needed
+                if ($approved == 0) {
+                    echo "Waiting for admin approval.</div>";
+                } else {
+                    // Store user role and privileges in session
+                    $_SESSION['user_id'] = $last_inserted_id;
+                    $_SESSION['username'] = $username;
+                    $_SESSION['role'] = $role;
+                    $_SESSION['privileges'] = $rolePrivileges[$role];
+
+                    echo "Redirecting to login page...</div>";
+                    header("refresh:3;url=login.php");
+                }
+            } else {
+                // Error message if execution fails
+                echo "<div class='alert alert-danger'>Error: " . $stmt->error . "</div>";
+            }
+
+            $stmt->close();
+        } else {
+            // Error message if SQL preparation fails
+            echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
+        }
     }
 
     $conn->close();
