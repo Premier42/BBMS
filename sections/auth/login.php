@@ -1,78 +1,129 @@
 <?php
 session_start();
+require_once '../../config/database.php';
 
-// Include database connection
-require 'config/database.php';
-
-// Function to sanitize input data
-function sanitize($data, $conn) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    $data = $conn->real_escape_string($data);
-    return $data;
+// Function to sanitize user input
+function sanitize_input($data) {
+    return htmlspecialchars(stripslashes(trim($data)));
 }
 
+// Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = sanitize($_POST['email'], $conn);
-    $password = sanitize($_POST['password'], $conn);
+    // Sanitize user input
+    $username = sanitize_input($_POST['username']);
+    $password = sanitize_input($_POST['password']);
 
-    $sql = "SELECT id, email, password FROM users WHERE email = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
-
-    if ($stmt->num_rows > 0) {
-        $stmt->bind_result($id, $email, $hashed_password);
-        $stmt->fetch();
-
-        if (password_verify($password, $hashed_password)) {
-            $_SESSION['user_id'] = $id;
-            header("Location: welcome.php");
-            exit();
-        } else {
-            $error = "Invalid email or password.";
-        }
-    } else {
-        $error = "Invalid email or password.";
+    // Validate required fields
+    if (empty($username) || empty($password)) {
+        echo "Please fill in all required fields.";
+        exit;
     }
-    $stmt->close();
+
+    // Prepare SQL query to fetch user data
+    $sql = "SELECT user_id, password_hash, role FROM users WHERE username = ?";
+    
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows == 1) {
+            $stmt->bind_result($user_id, $password_hash, $role);
+            $stmt->fetch();
+
+            // Verify the password
+            if (password_verify($password, $password_hash)) {
+                // Store user data in session
+                $_SESSION['user_id'] = $user_id;
+                $_SESSION['username'] = $username;
+                $_SESSION['role'] = $role;
+
+                // Redirect based on role
+                switch ($role) {
+                    case 'admin':
+                        header("Location: sections/admin/dashboard.php");
+                        break;
+                    case 'donor':
+                        header("Location: sections/donor/dashboard.php");
+                        break;
+                    case 'recipient':
+                        header("Location: sections/recipient/dashboard.php");
+                        break;
+                    case 'lab_technician':
+                        header("Location: sections/lab_technician/dashboard.php");
+                        break;
+                    case 'inventory_manager':
+                        header("Location: sections/inventory_manager/dashboard.php");
+                        break;
+                    case 'hospital_rep':
+                        header("Location: sections/hospital_rep/dashboard.php");
+                        break;
+                    default:
+                        echo "Invalid role.";
+                        exit;
+                }
+                exit;
+            } else {
+                echo "Invalid password.";
+            }
+        } else {
+            echo "No user found with that username.";
+        }
+
+        $stmt->close();
+    } else {
+        echo "Error: " . $conn->error;
+    }
+
+    $conn->close();
 }
-$conn->close();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-signin {
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+        .form-signin input[type="text"],
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h2 class="text-center mt-5">Login</h2>
-                <?php if (isset($error)) { ?>
-                    <div class="alert alert-danger"><?php echo $error; ?></div>
-                <?php } ?>
-                <form method="POST" action="">
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
-                </form>
-            </div>
-        </div>
-    </div>
+        <div class="form-signin">
+            <h1 class="h3 mb-3 fw-normal text-center">Please sign in</h1>
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                    <label for="username">Username</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                    <label for="password">Password</label>
+                </div>
+                <button class="w-100 btn btn-lg btn-danger" type="submit">Sign in</button>
+            </form>
+            <button type="button" class="btn btn-primary" onclick="location.href='register.php'">
+    Register Instead
+</button>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        </div>        
+    </div>
 </body>
 </html>
