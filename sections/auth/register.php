@@ -1,6 +1,7 @@
 <?php
 session_start();
-require_once '../../config/database.php'; // Include your database configuration file
+ // Include your database configuration file
+ require_once '../../config/database.php';
 
 // Include role privileges
 require_once '../../config/role_privileges.php';
@@ -20,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $address = sanitize_input($_POST['address']);
     $role = sanitize_input($_POST['role']);
 
-    // Validate required fields
+    // Validate required fields (server-side validation)
     if (empty($username) || empty($password) || empty($email) || empty($role)) {
         echo "<div class='alert alert-danger'>Please fill in all required fields.</div>";
         exit;
@@ -43,51 +44,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("ssssssi", $username, $password_hash, $role, $email, $phone_number, $address, $approved);
 
-// Execute the statement
-if ($stmt->execute()) {
-    // Registration successful message
-    echo "<div class='alert alert-success'>Registration successful. ";
+        // Execute the statement
+        if ($stmt->execute()) {
+            // Registration successful message
+            echo "<div class='alert alert-success'>Registration successful. ";
 
-    // Retrieve the last inserted ID
-    $last_inserted_id = $conn->insert_id;
+            // Retrieve the last inserted ID
+            $last_inserted_id = $stmt->insert_id;
 
-    // Check if approval is needed
-    if ($approved == 0) {
-        echo "Waiting for admin approval.</div>";
-    } else {
-        // Store user role and privileges in session
-        $_SESSION['user_id'] = $last_inserted_id;
-        $_SESSION['username'] = $username;
-        $_SESSION['role'] = $role;
-        $_SESSION['privileges'] = $rolePrivileges[$role];
-
-        echo "Redirecting to login page...</div>";
-        header("refresh:3;url=login.php");
-    }
-
-    // Optionally, you can add code to insert into specific role tables (e.g., admins table for 'admin')
-    if ($role == 'admin') {
-        $admin_sql = "INSERT INTO admins (user_id) VALUES (?)";
-        if ($admin_stmt = $conn->prepare($admin_sql)) {
-            $admin_stmt->bind_param("i", $last_inserted_id);
-            if ($admin_stmt->execute()) {
-                echo "<div class='alert alert-success'>Admin role added successfully.</div>";
+            // Check if approval is needed
+            if ($approved == 0) {
+                echo "Waiting for admin approval.</div>";
             } else {
-                echo "<div class='alert alert-danger'>Error adding admin role: " . $admin_stmt->error . "</div>";
+                // Store user role and privileges in session
+                $_SESSION['user_id'] = $last_inserted_id;
+                $_SESSION['username'] = $username;
+                $_SESSION['role'] = $role;
+                $_SESSION['privileges'] = $rolePrivileges[$role];
+
+                echo "Redirecting to login page...</div>";
+                header("refresh:3;url=login.php");
             }
-            $admin_stmt->close();
-        } else {
-            echo "<div class='alert alert-danger'>Error preparing admin role insertion: " . $conn->error . "</div>";
         }
     }
-} else {
-    // Error message if registration fails
-    echo "<div class='alert alert-danger'>Error: " . $stmt->error . "</div>";
-}
-
-$stmt->close();
-
-    } else {
+     else {
         // Error message if SQL preparation fails
         echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
     }
@@ -141,11 +121,11 @@ $stmt->close();
                     <label for="email">Email</label>
                 </div>
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Phone Number">
+                    <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Phone Number" required>
                     <label for="phone_number">Phone Number</label>
                 </div>
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="address" name="address" placeholder="Address">
+                    <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
                     <label for="address">Address</label>
                 </div>
                 <div class="form-floating">

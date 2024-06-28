@@ -19,8 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Prepare SQL query to fetch user data
-    $sql = "SELECT user_id, password_hash, role FROM users WHERE username = ?";
+    // Prepare SQL query to fetch user data including 'approved' status
+    $sql = "SELECT user_id, password_hash, role, approved FROM users WHERE username = ?";
     
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("s", $username);
@@ -28,11 +28,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->store_result();
 
         if ($stmt->num_rows == 1) {
-            $stmt->bind_result($user_id, $password_hash, $role);
+            $stmt->bind_result($user_id, $password_hash, $role, $approved);
             $stmt->fetch();
 
             // Verify the password
             if (password_verify($password, $password_hash)) {
+                // Check if user is approved
+                if ($approved == 0) {
+                    echo "Your account is not approved yet. Please contact the administrator.";
+                    exit;
+                }
+
                 // Store user data in session
                 $_SESSION['user_id'] = $user_id;
                 $_SESSION['username'] = $username;
@@ -56,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         header("Location: sections/inventory_manager/dashboard.php");
                         break;
                     case 'hospital_rep':
-                        header("Location: sections/hospital_rep/dashboard.php");
+                        header("Location: ../hospital_rep/dashboard.php");
                         break;
                     default:
                         echo "Invalid role.";
@@ -119,10 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <button class="w-100 btn btn-lg btn-danger" type="submit">Sign in</button>
             </form>
-            <button type="button" class="btn btn-primary" onclick="location.href='register.php'">
-    Register Instead
-</button>
-
+            <button type="button" class="btn btn-primary mt-3" onclick="location.href='register.php'">Register Instead</button>
         </div>        
     </div>
 </body>
