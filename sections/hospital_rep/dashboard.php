@@ -41,6 +41,7 @@ $conn->close();
     <style>
         body {
             background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .container {
             max-width: 900px;
@@ -49,10 +50,24 @@ $conn->close();
         }
         .form-section {
             margin-bottom: 30px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .form-section h2 {
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 10px;
         }
         .logout-btn {
             float: right;
             margin-top: -10px;
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: rgba(231, 76, 60, 0.05);
         }
     </style>
 </head>
@@ -148,3 +163,4 @@ $conn->close();
     </div>
 </body>
 </html>
+a
