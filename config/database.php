@@ -1,15 +1,13 @@
 <?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "blood_bank";
 
-$DB_HOST ="localhost";
-$DB_USER ="root";
-$DB_PASS ="";
-$DB_NAME ="blood_bank";
-$CONN = "";
-$CONN = mysqli_connect($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-if($CONN )
-    ECHO "connected";
-else
-    ECHO "not connected";
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
 ?>

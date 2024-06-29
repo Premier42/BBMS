@@ -1,19 +1,16 @@
 -- Insert sample users
-INSERT INTO users (username, password_hash, role, email, phone_number, address)
+-- Seed data for users table
+INSERT INTO users (username, password_hash, role, email, phone_number, address, approved, created_at)
 VALUES
-    ('admin', 'hashed_admin_password', 'admin', 'admin@example.com', '1234567890', 'Admin Address'),
-    ('donor1', 'hashed_donor1_password', 'donor', 'donor1@example.com', '1234567891', 'Donor 1 Address'),
-    ('donor2', 'hashed_donor2_password', 'donor', 'donor2@example.com', '1234567892', 'Donor 2 Address'),
-    ('recipient1', 'hashed_recipient1_password', 'recipient', 'recipient1@example.com', '1234567893', 'Recipient 1 Address'),
-    ('labtech1', 'hashed_labtech1_password', 'lab_technician', 'labtech1@example.com', '1234567894', 'Lab Technician 1 Address'),
-    ('inventory1', 'hashed_inventory1_password', 'inventory_manager', 'inventory1@example.com', '1234567895', 'Inventory Manager 1 Address'),
-    ('hospital1', 'hashed_hospital1_password', 'hospital_rep', 'hospital1@example.com', '1234567896', 'Hospital 1 Address'),
-    ('donor3', 'hashed_donor3_password', 'donor', 'donor3@example.com', '1234567897', 'Donor 3 Address'),
-    ('donor4', 'hashed_donor4_password', 'donor', 'donor4@example.com', '1234567898', 'Donor 4 Address'),
-    ('recipient2', 'hashed_recipient2_password', 'recipient', 'recipient2@example.com', '1234567899', 'Recipient 2 Address'),
-    ('labtech2', 'hashed_labtech2_password', 'lab_technician', 'labtech2@example.com', '1234567800', 'Lab Technician 2 Address'),
-    ('inventory2', 'hashed_inventory2_password', 'inventory_manager', 'inventory2@example.com', '1234567801', 'Inventory Manager 2 Address'),
-    ('hospital2', 'hashed_hospital2_password', 'hospital_rep', 'hospital2@example.com', '1234567802', 'Hospital 2 Address');
+    ('admin_user', 'hashed_password', 'admin', 'admin@example.com', '123456789', 'Admin Address', TRUE, NOW()),
+    ('donor_user', 'hashed_password', 'donor', 'donor@example.com', '987654321', 'Donor Address', TRUE, NOW()),
+    ('recipient_user', 'hashed_password', 'recipient', 'recipient@example.com', '654321987', 'Recipient Address', TRUE, NOW()),
+    ('lab_user_pending', 'hashed_password', 'lab_technician', 'lab_pending@example.com', '456789123', 'Lab Technician Address', FALSE, NOW()),
+    ('inventory_user_pending', 'hashed_password', 'inventory_manager', 'inventory_pending@example.com', '789123456', 'Inventory Manager Address', FALSE, NOW()),
+    ('hospital_user_pending', 'hashed_password', 'hospital_rep', 'hospital_pending@example.com', '321654987', 'Hospital Rep Address', FALSE, NOW()),
+    ('lab_user_approved', 'hashed_password', 'lab_technician', 'lab_approved@example.com', '456789123', 'Lab Technician Address', TRUE, NOW()),
+    ('inventory_user_approved', 'hashed_password', 'inventory_manager', 'inventory_approved@example.com', '789123456', 'Inventory Manager Address', TRUE, NOW()),
+    ('hospital_user_approved', 'hashed_password', 'hospital_rep', 'hospital_approved@example.com', '321654987', 'Hospital Rep Address', TRUE, NOW());
 
 -- Insert sample blood units
 INSERT INTO blood_units (donor_id, blood_type, volume, expiration_date, status)
