@@ -103,11 +103,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <style>
         body {
             background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .form-signup {
             max-width: 500px;
-            padding: 15px;
+            padding: 30px;
             margin: auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .form-signup .form-floating:focus-within {
             z-index: 2;
@@ -115,8 +119,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .form-signup input[type="text"],
         .form-signup input[type="password"],
         .form-signup input[type="email"],
+        .form-signup input[type="tel"],
+        .form-signup input[type="address"],
         .form-signup select {
             margin-bottom: 10px;
+        }
+        .form-signup button {
+            margin-top: 20px;
+        }
+        .form-signup .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
         }
     </style>
 </head>
@@ -125,27 +138,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="form-signup">
             <h1 class="h3 mb-3 fw-normal text-center">Register</h1>
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-                <div class="form-floating">
+                <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
                     <label for="username">Username</label>
                 </div>
-                <div class="form-floating">
+                <div class="form-floating mb-3">
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                     <label for="password">Password</label>
                 </div>
-                <div class="form-floating">
+                <div class="form-floating mb-3">
                     <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
                     <label for="email">Email</label>
                 </div>
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Phone Number" required>
+                <div class="form-floating mb-3">
+                    <input type="tel" class="form-control" id="phone_number" name="phone_number" placeholder="Phone Number" required>
                     <label for="phone_number">Phone Number</label>
                 </div>
-                <div class="form-floating">
+                <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
                     <label for="address">Address</label>
                 </div>
-                <div class="form-floating">
+                <div class="form-floating mb-3">
                     <select class="form-select" id="role" name="role" required>
                         <option value="donor">Donor</option>
                         <option value="recipient">Recipient</option>
@@ -157,7 +170,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label for="role">Role</label>
                 </div>
                 <button class="w-100 btn btn-lg btn-danger" type="submit">Register</button>
-                <button type="button" class="btn btn-primary mt-3" onclick="location.href='login.php'">Login Instead</button>
+                <button type="button" class="w-100 btn btn-lg btn-primary mt-3" onclick="location.href='login.php'">Login Instead</button>
             </form>
         </div>
     </div>
