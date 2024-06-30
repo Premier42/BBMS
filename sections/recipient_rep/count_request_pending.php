@@ -1,12 +1,12 @@
 <?php
 session_start();
 // Database connection
-include 'database.php'; 
+include '../../config/database.php'; 
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page or handle unauthorized access
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit;
 }
 

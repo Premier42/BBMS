@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'database.php'; // Include database connection script
+include '../../config/database.php'; 
 
 // Fetch user email based on session user_id
 if (isset($_SESSION['user_id'])) {
@@ -23,14 +23,14 @@ if (isset($_SESSION['user_id'])) {
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item dropdown">
                             <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
-                                <img src="account.png" class="avatar img-fluid" alt="">
+                                <img src="../../assets/Images/account.png" class="avatar img-fluid" alt="">
                                 <span class="ms-2">' . $email . '</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end rounded">
                                 <a class="dropdown-item" href="#">Profile</a>
                                 <a class="dropdown-item" href="#">Settings</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="logout.php">Logout</a>
+                                <a class="dropdown-item" href="../auth/logout.php">Logout</a>
                             </div>
                         </li>
                     </ul>

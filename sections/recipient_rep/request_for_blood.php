@@ -2,7 +2,7 @@
 session_start();
 
 // Include database connection
-include 'database.php';
+include '../../config/database.php'; 
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
