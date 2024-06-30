@@ -95,11 +95,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <style>
         body {
             background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .form-signin {
             max-width: 330px;
-            padding: 15px;
+            padding: 30px;
             margin: auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .form-signin .form-floating:focus-within {
             z-index: 2;
@@ -108,6 +112,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .form-signin input[type="password"] {
             margin-bottom: 10px;
         }
+        .form-signin button {
+            margin-top: 20px;
+        }
+        .form-signin .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
     </style>
 </head>
 <body>
@@ -115,17 +126,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="form-signin">
             <h1 class="h3 mb-3 fw-normal text-center">Please sign in</h1>
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-                <div class="form-floating">
+                <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
                     <label for="username">Username</label>
                 </div>
-                <div class="form-floating">
+                <div class="form-floating mb-3">
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                     <label for="password">Password</label>
                 </div>
                 <button class="w-100 btn btn-lg btn-danger" type="submit">Sign in</button>
             </form>
-            <button type="button" class="btn btn-primary mt-3" onclick="location.href='register.php'">Register Instead</button>
+            <button type="button" class="w-100 btn btn-lg btn-primary mt-3" onclick="location.href='register.php'">Register Instead</button>
         </div>        
     </div>
 </body>
