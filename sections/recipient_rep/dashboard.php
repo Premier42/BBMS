@@ -1,12 +1,13 @@
 <?php
 session_start();
+require_once '../../config/database.php';
 
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    // Redirect to login page or handle unauthorized access
-    header("Location:../auth/login.php");
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient_rep') {
+    header("Location: ../../auth/login.php");
     exit;
 }
+
 ?>
 
 <!DOCTYPE html>
