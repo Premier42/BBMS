@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         header("Location: sections/donor/dashboard.php");
                         break;
                     case 'recipient':
-                        header("Location: sections/recipient/dashboard.php");
+                        header("Location: ../recipient_rep/dashboard.php");
                         break;
                     case 'lab_technician':
                         header("Location: sections/lab_technician/dashboard.php");
