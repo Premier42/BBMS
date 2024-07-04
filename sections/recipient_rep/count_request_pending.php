@@ -1,12 +1,12 @@
 <?php
 session_start();
-// Database connection
+
+// Include database connection
 include '../../config/database.php'; 
 
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    // Redirect to login page or handle unauthorized access
-    header("Location: ../auth/login.php");
+// Check if user is logged in and has the recipient_rep role
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient_rep') {
+    header("Location: ../../auth/login.php");
     exit;
 }
 
@@ -19,25 +19,41 @@ $pendingRequestsCount = 0;
 
 // Query to fetch total number of requests for the logged-in user
 $totalRequestsQuery = "SELECT COUNT(*) AS totalRequests FROM blood_requests WHERE recipient_id = ?";
-$totalRequestsStmt = $conn->prepare($totalRequestsQuery);
-$totalRequestsStmt->bind_param("i", $user_id);
-$totalRequestsStmt->execute();
-$totalRequestsResult = $totalRequestsStmt->get_result();
-if ($totalRequestsResult->num_rows > 0) {
-    $totalRequestsCount = $totalRequestsResult->fetch_assoc()['totalRequests'];
+if ($totalRequestsStmt = $conn->prepare($totalRequestsQuery)) {
+    $totalRequestsStmt->bind_param("i", $user_id);
+    if ($totalRequestsStmt->execute()) {
+        $totalRequestsResult = $totalRequestsStmt->get_result();
+        if ($totalRequestsResult->num_rows > 0) {
+            $totalRequestsCount = $totalRequestsResult->fetch_assoc()['totalRequests'];
+        } else {
+            echo "No total requests found.";
+        }
+    } else {
+        echo "Error executing total requests query: " . $totalRequestsStmt->error;
+    }
+    $totalRequestsStmt->close();
+} else {
+    echo "Failed to prepare total requests statement: " . $conn->error;
 }
-$totalRequestsStmt->close();
 
 // Query to fetch number of pending requests for the logged-in user
 $pendingRequestsQuery = "SELECT COUNT(*) AS pendingRequests FROM blood_requests WHERE recipient_id = ? AND status = 'pending'";
-$pendingRequestsStmt = $conn->prepare($pendingRequestsQuery);
-$pendingRequestsStmt->bind_param("i", $user_id);
-$pendingRequestsStmt->execute();
-$pendingRequestsResult = $pendingRequestsStmt->get_result();
-if ($pendingRequestsResult->num_rows > 0) {
-    $pendingRequestsCount = $pendingRequestsResult->fetch_assoc()['pendingRequests'];
+if ($pendingRequestsStmt = $conn->prepare($pendingRequestsQuery)) {
+    $pendingRequestsStmt->bind_param("i", $user_id);
+    if ($pendingRequestsStmt->execute()) {
+        $pendingRequestsResult = $pendingRequestsStmt->get_result();
+        if ($pendingRequestsResult->num_rows > 0) {
+            $pendingRequestsCount = $pendingRequestsResult->fetch_assoc()['pendingRequests'];
+        } else {
+            echo "No pending requests found.";
+        }
+    } else {
+        echo "Error executing pending requests query: " . $pendingRequestsStmt->error;
+    }
+    $pendingRequestsStmt->close();
+} else {
+    echo "Failed to prepare pending requests statement: " . $conn->error;
 }
-$pendingRequestsStmt->close();
 
 // Close database connection
 $conn->close();
