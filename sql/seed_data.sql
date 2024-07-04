@@ -25,8 +25,8 @@ INSERT INTO donations (donor_id, unit_id, donation_date, location_id) VALUES
 
 -- Seed Data for Blood Requests
 INSERT INTO blood_requests (recipient_id, blood_type, volume, request_date, status) VALUES
-(3, 'A+', 500, '2024-06-20', 'pending'),
-(3, 'O-', 450, '2024-07-01', 'pending');
+(6, 'A+', 500, '2024-06-20', 'pending'),
+(6, 'O-', 450, '2024-07-01', 'pending');
 
 -- Seed Data for Blood Test Results
 INSERT INTO blood_test_results (unit_id, test_date, test_result) VALUES
