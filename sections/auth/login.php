@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Redirect based on role
                 switch ($role) {
                     case 'admin':
-                        header("Location: sections/admin/dashboard.php");
+                        header("Location: ../admin/dashboard.php");
                         break;
                     case 'donor':
                         header("Location: ../donor/dashboard.php");
@@ -56,10 +56,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         header("Location: ../recipient_rep/dashboard.php");
                         break;
                     case 'lab_technician':
-                        header("Location: sections/lab_technician/dashboard.php");
+                        header("Location: ../lab_technician/dashboard.php");
                         break;
                     case 'inventory_manager':
-                        header("Location: sections/inventory_manager/dashboard.php");
+                        header("Location: ../inventory_manager/dashboard.php");
                         break;
                     case 'hospital_rep':
                         header("Location: ../hospital_rep/dashboard.php");
