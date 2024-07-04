@@ -7,6 +7,7 @@ CREATE TABLE users (
     email VARCHAR(100) UNIQUE NOT NULL,
     phone_number VARCHAR(20),
     address VARCHAR(255),
+    approved BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -15,7 +16,7 @@ CREATE TABLE blood_units (
     unit_id INT PRIMARY KEY AUTO_INCREMENT,
     donor_id INT,
     blood_type ENUM('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-') NOT NULL,
-    volume DECIMAL(5,2) NOT NULL,
+    volume INT(5) NOT NULL,
     expiration_date DATE NOT NULL,
     status ENUM('available', 'unavailable', 'donated') NOT NULL DEFAULT 'available',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -37,7 +38,7 @@ CREATE TABLE blood_requests (
     request_id INT PRIMARY KEY AUTO_INCREMENT,
     recipient_id INT,
     blood_type ENUM('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-') NOT NULL,
-    volume DECIMAL(5,2) NOT NULL,
+    volume INT(5) NOT NULL,
     request_date DATE NOT NULL,
     status ENUM('pending', 'fulfilled', 'cancelled') NOT NULL DEFAULT 'pending',
     FOREIGN KEY (recipient_id) REFERENCES users(user_id) ON DELETE SET NULL
