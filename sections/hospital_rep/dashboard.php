@@ -28,6 +28,18 @@ $sql_inventory = "SELECT blood_units.blood_type, COUNT(blood_units.unit_id) AS a
 $result_inventory = $conn->query($sql_inventory);
 $inventory = $result_inventory->fetch_all(MYSQLI_ASSOC);
 
+// Fetch hospital representative's hospital information
+$sql_hospital_info = "SELECT locations.name, locations.address, locations.phone_number
+                      FROM hospital_representative_info
+                      JOIN locations ON hospital_representative_info.hospital_id = locations.location_id
+                      WHERE hospital_representative_info.user_id = ?";
+$stmt_hospital_info = $conn->prepare($sql_hospital_info);
+$stmt_hospital_info->bind_param("i", $user_id);
+$stmt_hospital_info->execute();
+$result_hospital_info = $stmt_hospital_info->get_result();
+$hospital_info = $result_hospital_info->fetch_assoc();
+$stmt_hospital_info->close();
+
 $conn->close();
 ?>
 
@@ -79,6 +91,18 @@ $conn->close();
                 <button class="btn btn-danger" type="submit">Logout</button>
             </form>
         </h1>
+
+        <!-- Hospital Information -->
+        <div class="form-section">
+            <h2 class="h4 mb-3">Hospital Information</h2>
+            <?php if ($hospital_info): ?>
+                <p><strong>Name:</strong> <?php echo htmlspecialchars($hospital_info['name']); ?></p>
+                <p><strong>Address:</strong> <?php echo htmlspecialchars($hospital_info['address']); ?></p>
+                <p><strong>Phone Number:</strong> <?php echo htmlspecialchars($hospital_info['phone_number']); ?></p>
+            <?php else: ?>
+                <p>No hospital information found.</p>
+            <?php endif; ?>
+        </div>
 
         <!-- Submit and Track Blood Requests -->
         <div class="form-section">
