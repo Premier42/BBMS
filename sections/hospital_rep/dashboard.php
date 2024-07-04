@@ -69,6 +69,22 @@ $conn->close();
         .table-striped tbody tr:nth-of-type(even) {
             background-color: rgba(231, 76, 60, 0.05);
         }
+        .btn-edit {
+            background-color: #f0ad4e;
+            color: white;
+        }
+        .btn-edit:hover {
+            background-color: #ec971f;
+            color: white;
+        }
+        .btn-cancel {
+            background-color: #d9534f;
+            color: white;
+        }
+        .btn-cancel:hover {
+            background-color: #c9302c;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -117,6 +133,7 @@ $conn->close();
                             <th scope="col">Volume (mL)</th>
                             <th scope="col">Request Date</th>
                             <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -127,6 +144,10 @@ $conn->close();
                                 <td><?php echo htmlspecialchars($request['volume']); ?></td>
                                 <td><?php echo htmlspecialchars($request['request_date']); ?></td>
                                 <td><?php echo htmlspecialchars($request['status']); ?></td>
+                                <td>
+                                    <a href="edit_request.php?id=<?php echo $request['request_id']; ?>" class="btn btn-edit btn-sm">Edit</a>
+                                    <a href="cancel_request.php?id=<?php echo $request['request_id']; ?>" class="btn btn-cancel btn-sm">Cancel</a>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
