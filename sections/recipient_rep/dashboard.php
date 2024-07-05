@@ -3,8 +3,8 @@ session_start();
 require_once '../../config/database.php';
 
 // Check if user is logged in
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient_rep') {
-    header("Location: ../auth/login.php");
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient') {
+    header("Location: ../../auth/login.php");
     exit;
 }
 
@@ -18,8 +18,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient_rep') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipient Dashboard</title>
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="../../assets/css/recipients.css">
 </head>
 
@@ -52,10 +51,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient_rep') {
                 </li>
             </ul>
             <div class="sidebar-footer">
-                <a href="../auth/logout.php" class="sidebar-link">
-                    <i class="lni lni-exit"></i>
-                    <span>Logout</span>
-                </a>
+                <form class="logout-btn" method="post" action="../../auth/logout.php">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="lni lni-exit"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
             </div>
         </aside>
 
@@ -141,9 +142,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient_rep') {
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="../../assets/js/recipient_scripts.js"></script>
 </body>
 
