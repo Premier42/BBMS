@@ -1,9 +1,11 @@
 <?php
-session_start();
-include '../../config/database.php'; 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include '../../config/database.php';
 
-// Check if user is logged in and has the recipient_rep role
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient_rep') {
+// Check if user is logged in and has the recipient role
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient') {
     header("Location: ../../auth/login.php");
     exit;
 }
@@ -25,7 +27,6 @@ if (isset($_SESSION['user_id'])) {
 
             // Display user email in the navbar
             echo '<nav class="navbar navbar-expand px-4 py-3">
-                    <form action="#" class="d-none d-sm-inline-block"></form>
                     <div class="navbar-collapse collapse">
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item dropdown">
@@ -37,7 +38,11 @@ if (isset($_SESSION['user_id'])) {
                                     <a class="dropdown-item" href="#">Profile</a>
                                     <a class="dropdown-item" href="#">Settings</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="../auth/logout.php">Logout</a>
+                                    <form action="../../auth/logout.php" method="post">
+                                        <button type="submit" class="dropdown-item">
+                                            Logout
+                                        </button>
+                                    </form>
                                 </div>
                             </li>
                         </ul>
