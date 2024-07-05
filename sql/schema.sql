@@ -11,6 +11,15 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Create Location Table (Lab/Hospital)
+CREATE TABLE locations (
+    location_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(20),
+    type ENUM('lab', 'hospital') NOT NULL
+);
+
 -- Create BloodUnit Table
 CREATE TABLE blood_units (
     unit_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -29,8 +38,10 @@ CREATE TABLE donations (
     donor_id INT,
     unit_id INT,
     donation_date DATE NOT NULL,
+    location_id INT,
     FOREIGN KEY (donor_id) REFERENCES users(user_id) ON DELETE SET NULL,
-    FOREIGN KEY (unit_id) REFERENCES blood_units(unit_id) ON DELETE SET NULL
+    FOREIGN KEY (unit_id) REFERENCES blood_units(unit_id) ON DELETE SET NULL,
+    FOREIGN KEY (location_id) REFERENCES locations(location_id) ON DELETE SET NULL
 );
 
 -- Create BloodRequest Table
@@ -65,9 +76,20 @@ CREATE TABLE inventory (
     FOREIGN KEY (inventory_manager_id) REFERENCES users(user_id) ON DELETE SET NULL
 );
 
--- Create Admin Table
-CREATE TABLE admins (
-    admin_id INT PRIMARY KEY AUTO_INCREMENT,
+-- Create Hospital Representative Info Table
+CREATE TABLE hospital_representative_info (
+    hospital_rep_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    hospital_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (hospital_id) REFERENCES locations(location_id) ON DELETE CASCADE
+);
+
+-- Create Lab Technician Info Table
+CREATE TABLE lab_technician_info (
+    lab_technician_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    lab_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (lab_id) REFERENCES locations(location_id) ON DELETE CASCADE
 );
