@@ -3,6 +3,7 @@
 session_start();
 require_once '../../config/database.php';
 
+
 // Check if the user is logged in and has the admin role
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../auth/login.php");
@@ -157,15 +158,13 @@ $conn->close();
 
     /* Logout Button Styles */
     .logout-btn {
-        position: absolute; 
-        bottom: 20px; 
-        left: 50%; 
-        transform: translateX(-50%); 
-        width: 100%; 
-        text-align: center;
+    position: fixed;
+    top: 20px;
+    right: 80px;
+    text-align: center;
     }
     .logout-btn button {
-        width: 8%; 
+        width: 150%; 
         padding: 10px; 
         background-color: #dc3545; 
         color: #fff; 
@@ -296,51 +295,51 @@ $conn->close();
         </h1>
 
 
-        <!-- Manage Users Section -->
-
-        <div class="form-section" id="users-section">
-            <h2 class="h4 mb-3">Manage Users</h2>
-            <!--<a href="add_user.php" class="btn btn-primary mb-3">Add User</a> -->
-            <form method="get" action="add_user.php">
-                <button type="submit" class="custom-btn btn-primary mb-3">Add User</button>
-            </form>
-            <?php if (count($users) > 0): ?>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">User ID</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Role</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($users as $user): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($user['user_id']); ?></td>
-                                <td><?php echo htmlspecialchars($user['username']); ?></td>
-                                <td><?php echo htmlspecialchars($user['email']); ?></td>
-                                <td><?php echo htmlspecialchars($user['role']); ?></td>
-                                <td>
-                                    <form method="post" action="edit_user.php" class="d-inline">
-                                        <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['user_id']); ?>">
-                                        <button class="btn btn-warning btn-sm" type="submit">Edit</button>
-                                    </form>
-                                    <form method="post" action="delete_user.php" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this user?');">
-                                        <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['user_id']); ?>">
-                                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <p>No users found.</p>
-            <?php endif; ?>
-        </div>
-        <!-- Manage Users section ending here -->
+       <!-- Manage Users Section -->
+<div class="form-section" id="users-section">
+    <h2 class="h4 mb-3">Manage Users</h2>
+    <form method="get" action="add_user.php">
+        <button type="submit" class="custom-btn btn-primary mb-3">Add User</button>
+    </form>
+    <?php if (count($users) > 0): ?>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">User ID</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Approved</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($users as $user): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($user['user_id']); ?></td>
+                        <td><?php echo htmlspecialchars($user['username']); ?></td>
+                        <td><?php echo htmlspecialchars($user['email']); ?></td>
+                        <td><?php echo htmlspecialchars($user['role']); ?></td>
+                        <td><?php echo $user['approved'] ? '1' : '0'; ?></td>
+                        <td>
+                            <form method="post" action="edit_user.php" class="d-inline">
+                                <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['user_id']); ?>">
+                                <button class="btn btn-warning btn-sm" type="submit">Edit</button>
+                            </form>
+                            <form method="post" action="delete_user.php" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['user_id']); ?>">
+                                <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p>No users found.</p>
+    <?php endif; ?>
+</div>
+<!-- Manage Users section ending here -->
 
 
         <!-- Manage Donations Section -->
@@ -357,8 +356,8 @@ $conn->close();
                         <tr>
                             <th scope="col">Donation ID</th>
                             <th scope="col">Donor ID</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Location</th>
+                            <th scope="col">Donation Date</th>
+                            <th scope="col">Location ID</th>
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
@@ -511,5 +510,4 @@ $conn->close();
     <!-- JS ending here -->
 </body>
 </html>
-
 
