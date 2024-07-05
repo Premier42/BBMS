@@ -1,11 +1,13 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Include database connection
 include '../../config/database.php';
 
 // Check if user is logged in and has the recipient_rep role
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient_rep') {
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient') {
     header("Location: ../../auth/login.php");
     exit;
 }
@@ -46,3 +48,4 @@ if ($result) {
 // Close statement and database connection
 mysqli_stmt_close($stmt);
 mysqli_close($conn);
+?>
