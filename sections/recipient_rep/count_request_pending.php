@@ -1,11 +1,14 @@
 <?php
-session_start();
+// Check if session is not already active, then start the session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Include database connection
 include '../../config/database.php'; 
 
 // Check if user is logged in and has the recipient_rep role
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient_rep') {
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient') {
     header("Location: ../../auth/login.php");
     exit;
 }

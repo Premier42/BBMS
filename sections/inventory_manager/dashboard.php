@@ -2,31 +2,26 @@
 session_start();
 require_once '../../config/database.php';
 
-// Check if the user is logged in and has the hospital_rep role
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'hospital_rep') {
-    header("Location: ../auth/login.php");
+// Check if the user is logged in and has the appropriate role
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'inventory_manager') {
+    header("Location: ../../auth/login.php");
     exit;
 }
 
 $user_id = $_SESSION['user_id'];
 
-// Fetch previous blood requests
-$sql_requests = "SELECT request_id, blood_type, volume, request_date, status FROM blood_requests WHERE recipient_id = ?";
-$stmt_requests = $conn->prepare($sql_requests);
-$stmt_requests->bind_param("i", $user_id);
-$stmt_requests->execute();
-$result_requests = $stmt_requests->get_result();
-$requests = $result_requests->fetch_all(MYSQLI_ASSOC);
-$stmt_requests->close();
-
-// Fetch blood availability from inventory
-$sql_inventory = "SELECT blood_units.blood_type, COUNT(blood_units.unit_id) AS available_units
-                  FROM blood_units
-                  JOIN inventory ON blood_units.unit_id = inventory.unit_id
-                  WHERE inventory.status = 'available'
-                  GROUP BY blood_units.blood_type";
-$result_inventory = $conn->query($sql_inventory);
+// Fetch blood inventory
+$sql_inventory = "
+    SELECT bu.unit_id, bu.blood_type, bu.volume, bu.expiration_date, i.status
+    FROM blood_units bu
+    JOIN inventory i ON bu.unit_id = i.unit_id
+    WHERE i.inventory_manager_id = ?";
+$stmt_inventory = $conn->prepare($sql_inventory);
+$stmt_inventory->bind_param("i", $user_id);
+$stmt_inventory->execute();
+$result_inventory = $stmt_inventory->get_result();
 $inventory = $result_inventory->fetch_all(MYSQLI_ASSOC);
+$stmt_inventory->close();
 
 $conn->close();
 ?>
@@ -36,7 +31,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospital Representative Dashboard</title>
+    <title>Inventory Management Dashboard</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -77,11 +72,11 @@ $conn->close();
             background-color: #ec971f;
             color: white;
         }
-        .btn-cancel {
+        .btn-delete {
             background-color: #d9534f;
             color: white;
         }
-        .btn-cancel:hover {
+        .btn-delete:hover {
             background-color: #c9302c;
             color: white;
         }
@@ -90,16 +85,16 @@ $conn->close();
 <body>
     <div class="container">
         <h1 class="h3 mb-3 fw-normal text-center">
-            Hospital Representative Dashboard
+            Inventory Management Dashboard
             <form class="logout-btn" method="post" action="/sections/auth/logout.php">
                 <button class="btn btn-danger" type="submit">Logout</button>
             </form>
         </h1>
 
-        <!-- Submit and Track Blood Requests -->
+        <!-- Add Blood Unit -->
         <div class="form-section">
-            <h2 class="h4 mb-3">Submit Blood Request</h2>
-            <form method="post" action="submit_request.php">
+            <h2 class="h4 mb-3">Add Blood Unit</h2>
+            <form method="post" action="add_blood_unit.php">
                 <div class="form-floating mb-3">
                     <select class="form-select" id="blood_type" name="blood_type" required>
                         <option value="">Select Blood Type</option>
@@ -118,67 +113,47 @@ $conn->close();
                     <input type="number" class="form-control" id="volume" name="volume" placeholder="Volume (in mL)" required>
                     <label for="volume">Volume (in mL)</label>
                 </div>
-                <button class="w-100 btn btn-lg btn-danger" type="submit">Submit Request</button>
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" id="expiration_date" name="expiration_date" placeholder="Expiration Date" required>
+                    <label for="expiration_date">Expiration Date</label>
+                </div>
+                <button class="w-100 btn btn-lg btn-danger" type="submit">Save</button>
             </form>
         </div>
 
+        <!-- Manage Blood Inventory -->
         <div class="form-section">
-            <h2 class="h4 mb-3">Track Blood Requests</h2>
-            <?php if (count($requests) > 0): ?>
+            <h2 class="h4 mb-3">Manage Blood Inventory</h2>
+            <?php if (count($inventory) > 0): ?>
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col">Request ID</th>
+                            <th scope="col">Unit ID</th>
                             <th scope="col">Blood Type</th>
                             <th scope="col">Volume (mL)</th>
-                            <th scope="col">Request Date</th>
+                            <th scope="col">Expiration Date</th>
                             <th scope="col">Status</th>
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($requests as $request): ?>
+                        <?php foreach ($inventory as $unit): ?>
                             <tr>
-                                <td><?php echo htmlspecialchars($request['request_id']); ?></td>
-                                <td><?php echo htmlspecialchars($request['blood_type']); ?></td>
-                                <td><?php echo htmlspecialchars($request['volume']); ?></td>
-                                <td><?php echo htmlspecialchars($request['request_date']); ?></td>
-                                <td><?php echo htmlspecialchars($request['status']); ?></td>
+                                <td><?php echo htmlspecialchars($unit['unit_id']); ?></td>
+                                <td><?php echo htmlspecialchars($unit['blood_type']); ?></td>
+                                <td><?php echo htmlspecialchars($unit['volume']); ?></td>
+                                <td><?php echo htmlspecialchars($unit['expiration_date']); ?></td>
+                                <td><?php echo htmlspecialchars($unit['status']); ?></td>
                                 <td>
-                                    <a href="edit_request.php?id=<?php echo $request['request_id']; ?>" class="btn btn-edit btn-sm">Edit</a>
-                                    <a href="cancel_request.php?id=<?php echo $request['request_id']; ?>" class="btn btn-cancel btn-sm">Cancel</a>
+                                    <a href="edit_blood_unit.php?id=<?php echo $unit['unit_id']; ?>" class="btn btn-edit btn-sm">Edit</a>
+                                    <a href="delete_blood_unit.php?id=<?php echo $unit['unit_id']; ?>" class="btn btn-delete btn-sm">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
             <?php else: ?>
-                <p>No blood requests found.</p>
-            <?php endif; ?>
-        </div>
-
-        <!-- Communicate with Inventory Managers -->
-        <div class="form-section">
-            <h2 class="h4 mb-3">Blood Availability</h2>
-            <?php if (count($inventory) > 0): ?>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">Blood Type</th>
-                            <th scope="col">Available Units</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($inventory as $item): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($item['blood_type']); ?></td>
-                                <td><?php echo htmlspecialchars($item['available_units']); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <p>No available blood units found.</p>
+                <p>No blood units found in the inventory.</p>
             <?php endif; ?>
         </div>
     </div>
