@@ -20,6 +20,30 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient') {
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="../../assets/css/recipients.css">
+    <style>
+        .bg-custom-red {
+            background-color: #ff4d4d;
+            color: white;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .bg-custom-green {
+            background-color: #4caf50;
+            color: white;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .bg-custom-red h5,
+        .bg-custom-red p {
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
@@ -30,7 +54,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient') {
                     <i class="lni lni-grid-alt"></i>
                 </button>
                 <div class="sidebar-logo">
-                    <a href="#">BBMS</a>
+                    <a href="#">CRUDCare</a>
                 </div>
             </div>
             <ul class="sidebar-nav">
@@ -44,11 +68,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient') {
                         <i class="lni lni-popup"></i> <span>Blood Request history</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link" data-section-id="pendingRequests">
-                        <i class="lni lni-agenda"></i> <span>Pending Request</span>
-                    </a>
-                </li>
+
             </ul>
             <div class="sidebar-footer">
                 <form class="logout-btn" method="post" action="../../auth/logout.php">
@@ -70,6 +90,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient') {
                                 <img src="../../assets/Images/account.png" class="avatar img-fluid" alt="">
                             </a>
                             <div class="dropdown-menu dropdown-menu-end rounded">
+
                                 <?php include 'navbar.php'; ?>
                             </div>
                         </li>
@@ -110,6 +131,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient') {
                         </div>
                     </div>
 
+
                     <div id="bloodRequests" class="content-section">
                         <h3 class="fw-bold fs-4 mb-3">Blood Requests</h3>
                         <div class="row">
@@ -133,10 +155,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient') {
                         </div>
                     </div>
 
-                    <div id="pendingRequests" class="content-section" style="display: none;">
-                        <h3 class="fw-bold fs-4 mb-3">Pending Requests</h3>
-                        <!-- Add your Pending Requests content here -->
-                    </div>
+
                 </div>
             </main>
         </div>
