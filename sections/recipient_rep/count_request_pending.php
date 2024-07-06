@@ -59,28 +59,31 @@ if ($pendingRequestsStmt = $conn->prepare($pendingRequestsQuery)) {
 }
 
 // Close database connection
+
 $conn->close();
 ?>
 
-<div class="row">
-    <div class="col-12 col-md-4">
-        <div class="card border-0">
-            <div class="card-body py-4">
-                <h5 class="mb-2 fw-bold">Total Requests</h5>
-                <p class="mb-0 fw-bold">
-                    <?php echo $totalRequestsCount; ?>
-                </p>
+<div class="container">
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="card border-0 bg-custom-red">
+                    <div class="card-body py-4">
+                        <h5 class="mb-2 fw-bold text-center">Total Requests</h5>
+                        <p class="mb-0 fw-bold text-center">
+                            <?php echo $totalRequestsCount; ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card border-0 bg-custom-green">
+                    <div class="card-body py-4">
+                        <h5 class="mb-2 fw-bold text-center">Pending Requests</h5>
+                        <p class="mb-0 fw-bold text-center">
+                            <?php echo $pendingRequestsCount; ?>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-12 col-md-4">
-        <div class="card border-0">
-            <div class="card-body py-4">
-                <h5 class="mb-2 fw-bold">Pending Requests</h5>
-                <p class="mb-0 fw-bold">
-                    <?php echo $pendingRequestsCount; ?>
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
