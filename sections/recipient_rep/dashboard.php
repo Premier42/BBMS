@@ -71,7 +71,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient') {
 
             </ul>
             <div class="sidebar-footer">
-                <form class="logout-btn" method="post" action="../../auth/logout.php">
+                <form class="logout-btn" method="post" action="../auth/logout.php">
                     <button type="submit" class="btn btn-danger">
                         <i class="lni lni-exit"></i>
                         <span>Logout</span>
