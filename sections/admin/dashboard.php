@@ -1,4 +1,5 @@
 
+
 <?php
 session_start();
 require_once '../../config/database.php';
@@ -356,6 +357,7 @@ $conn->close();
                         <tr>
                             <th scope="col">Donation ID</th>
                             <th scope="col">Donor ID</th>
+                            <th scope="col">Unit ID</th>
                             <th scope="col">Donation Date</th>
                             <th scope="col">Location ID</th>
                             <th scope="col">Actions</th>
@@ -366,6 +368,7 @@ $conn->close();
                             <tr>
                                 <td><?php echo htmlspecialchars($donation['donation_id']); ?></td>
                                 <td><?php echo htmlspecialchars($donation['donor_id']); ?></td>
+                                <td><?php echo htmlspecialchars($donation['unit_id']); ?></td>
                                 <td><?php echo htmlspecialchars($donation['donation_date']); ?></td>
                                 <td><?php echo htmlspecialchars($donation['location_id']); ?></td>
                                 <td>

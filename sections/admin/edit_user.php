@@ -13,7 +13,7 @@ $user_id = $username = $email = $phone_number = $address = $role = $approved = "
 $username_err = $email_err = $role_err = "";
 $success_message = "";
 
-// Retrieve user details for editing if user_id is provided
+// Retrieve user details for editing if user_id is provided via GET
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['user_id']) && !empty(trim($_GET['user_id']))) {
     $user_id = trim($_GET['user_id']);
 
@@ -30,30 +30,19 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['user_id']) && !empty(tri
 
             if ($result->num_rows == 1) {
                 $row = $result->fetch_assoc();
-                // Assign fetched values only if they exist
-                if (isset($row['username'])) {
-                    $username = $row['username'];
-                }
-                if (isset($row['email'])) {
-                    $email = $row['email'];
-                }
-                if (isset($row['phone_number'])) {
-                    $phone_number = $row['phone_number'];
-                }
-                if (isset($row['address'])) {
-                    $address = $row['address'];
-                }
-                if (isset($row['role'])) {
-                    $role = $row['role'];
-                }
-                if (isset($row['approved'])) {
-                    $approved = $row['approved'];
-                }
+                $username = $row['username'];
+                $email = $row['email'];
+                $phone_number = isset($row['phone_number']) ? $row['phone_number'] : '';
+                $address = isset($row['address']) ? $row['address'] : '';
+                $role = $row['role'];
+                $approved = $row['approved'];
             } else {
                 echo "User not found.";
+                exit;
             }
         } else {
             echo "Something went wrong. Please try again later.";
+            exit;
         }
 
         // Close statement
@@ -61,8 +50,64 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['user_id']) && !empty(tri
     }
 }
 
-// Close connection
-$conn->close();
+// Handle form submission for updating user details
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Validate user_id
+    if (isset($_POST['user_id']) && !empty(trim($_POST['user_id']))) {
+        $user_id = trim($_POST['user_id']);
+    } else {
+        echo "User ID not specified.";
+        exit;
+    }
+
+    // Validate and sanitize inputs
+    if (isset($_POST['username']) && !empty(trim($_POST['username']))) {
+        $username = trim($_POST['username']);
+    } else {
+        $username_err = "Please enter a username.";
+    }
+
+    if (isset($_POST['email']) && !empty(trim($_POST['email']))) {
+        $email = trim($_POST['email']);
+    } else {
+        $email_err = "Please enter an email.";
+    }
+    
+    $approved = isset($_POST['approved']) ? 1 : 0;
+
+    if (isset($_POST['role']) && !empty(trim($_POST['role']))) {
+        $role = trim($_POST['role']);
+    } else {
+        $role_err = "Please select a role.";
+    }
+
+    // Check input errors before inserting in database
+    if (empty($username_err) && empty($password_err) && empty($email_err) && empty($role_err)) {
+        $sql = "UPDATE users SET username=?, role=?, email=?, phone_number=?, address=?, approved=? WHERE user_id=?";
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("sssssii", $param_username, $param_role, $param_email, $param_phone, $param_address, $param_approved, $param_user_id);
+            $param_username = $username;
+            $param_role = $role;
+            $param_email = $email;
+            $param_phone = trim($_POST["phone_number"]);
+            $param_address = trim($_POST["address"]);
+            $param_approved = $approved;
+            $param_user_id = $user_id;
+            
+            if ($stmt->execute()) {
+                $success_message = "User updated successfully.";
+                $username = $password = $email = $phone_number = $address = $role = $approved = "";
+                
+            } else {
+                echo "Something went wrong. Please try again later.";
+            }
+            $stmt->close();
+        }
+    }
+
+    // Close connection
+    $conn->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -135,13 +180,6 @@ h2 {
     font-size: 14px;
 }
 
-.success-message {
-    color:forestgreen;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
 .btn-group {
     display: flex;
     justify-content: space-between;
@@ -177,6 +215,14 @@ h2 {
     opacity: 0.9;
 }
 
+
+.success-message {
+    color:forestgreen;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 15px;
@@ -193,15 +239,14 @@ h2 {
     }
 }
 
-
     </style>
 </head>
 <body>
     <div class="container mt-5">
         <h2>Edit User</h2>
-        <?php
+        <?php 
         if (!empty($success_message)) {
-            echo '<div class="alert alert-success">' . $success_message . '</div>';
+            echo '<div class="alert alert-success success-message">' . $success_message . '</div>';
         }
         ?>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
@@ -226,18 +271,18 @@ h2 {
             </div>
             <div class="form-group mb-3">
                 <label for="approved">Approved:</label>
-                <input type="checkbox" name="approved" id="approved" <?php if ($approved == 1) echo "checked"; ?>>
+                <input type="checkbox" name="approved" id="approved" <?php if ($approved == 1) echo 'checked'; ?>>
             </div>
             <div class="form-group mb-3 <?php echo (!empty($role_err)) ? 'has-error' : ''; ?>">
                 <label>Role</label>
                 <select name="role" class="form-control">
                     <option value="">Select role</option>
-                    <option value="admin" <?php if ($role == 'admin') echo "selected"; ?>>Admin</option>
-                    <option value="donor" <?php if ($role == 'donor') echo "selected"; ?>>Donor</option>
-                    <option value="recipient" <?php if ($role == 'recipient') echo "selected"; ?>>Recipient</option>
-                    <option value="lab_technician" <?php if ($role == 'lab_technician') echo "selected"; ?>>Lab Technician</option>
-                    <option value="inventory_manager" <?php if ($role == 'inventory_manager') echo "selected"; ?>>Inventory Manager</option>
-                    <option value="hospital_rep" <?php if ($role == 'hospital_rep') echo "selected"; ?>>Hospital Rep</option>
+                    <option value="admin" <?php echo ($role == 'admin') ? 'selected' : ''; ?>>Admin</option>
+                    <option value="donor" <?php echo ($role == 'donor') ? 'selected' : ''; ?>>Donor</option>
+                    <option value="recipient" <?php echo ($role == 'recipient') ? 'selected' : ''; ?>>Recipient</option>
+                    <option value="lab_technician" <?php echo ($role == 'lab_technician') ? 'selected' : ''; ?>>Lab Technician</option>
+                    <option value="inventory_manager" <?php echo ($role == 'inventory_manager') ? 'selected' : ''; ?>>Inventory Manager</option>
+                    <option value="hospital_rep" <?php echo ($role == 'hospital_rep') ? 'selected' : ''; ?>>Hospital Rep</option>
                 </select>
                 <span class="help-block"><?php echo $role_err; ?></span>
             </div>

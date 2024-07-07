@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->close();
         }
     }
-
+    
     // Validate password
     if (empty(trim($_POST["password"]))) {
         $password_err = "Please enter a password.";
