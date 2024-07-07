@@ -10,6 +10,20 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'hospital_rep') {
 
 $user_id = $_SESSION['user_id'];
 
+// Fetch hospital and representative information
+$sql_info = "SELECT locations.name AS hospital_name, locations.address AS hospital_address, locations.phone_number AS hospital_phone,
+                    users.username AS rep_name, users.phone_number AS rep_phone
+             FROM hospital_representative_info
+             INNER JOIN locations ON hospital_representative_info.hospital_id = locations.location_id
+             INNER JOIN users ON hospital_representative_info.user_id = users.user_id
+             WHERE hospital_representative_info.user_id = ?";
+$stmt_info = $conn->prepare($sql_info);
+$stmt_info->bind_param("i", $user_id);
+$stmt_info->execute();
+$result_info = $stmt_info->get_result();
+$info = $result_info->fetch_assoc();
+$stmt_info->close();
+
 // Fetch previous blood requests
 $sql_requests = "SELECT request_id, blood_type, volume, request_date, status FROM blood_requests WHERE recipient_id = ?";
 $stmt_requests = $conn->prepare($sql_requests);
@@ -95,6 +109,14 @@ $conn->close();
                 <button class="btn btn-danger" type="submit">Logout</button>
             </form>
         </h1>
+
+        <div class="alert alert-info">
+            <strong>Hospital:</strong> <?php echo htmlspecialchars($info['hospital_name']); ?><br>
+            <strong>Location:</strong> <?php echo htmlspecialchars($info['hospital_address']); ?><br>
+            <strong>Phone:</strong> <?php echo htmlspecialchars($info['hospital_phone']); ?><br>
+            <strong>Representative:</strong> <?php echo htmlspecialchars($info['rep_name']); ?><br>
+            <strong>Representative Phone:</strong> <?php echo htmlspecialchars($info['rep_phone']); ?><br>
+        </div>
 
         <!-- Submit and Track Blood Requests -->
         <div class="form-section">
