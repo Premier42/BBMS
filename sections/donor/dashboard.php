@@ -3,143 +3,146 @@ session_start();
 require_once '../../config/database.php';
 
 // Check if the user is logged in and has the donor role
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'donor') {
-    header("Location: ../../auth/login.php");
+/*if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'donor') {
+    header("Location: ../sections/auth/login.php");
     exit;
 }
+    
 
-$user_id = $_SESSION['user_id'];
+<?php */
+// helloo
+$showalert = false;
+$showsuccess = false;
+$showalertusername = false;
+$showalertemail = false;
+$showalertgender = false;
+$showalertaddress = false;
+$showalertnumber = false;
 
-// Fetch the donor's donations
-$sql_donations = "
-    SELECT 
-        d.donation_id, 
-        bu.blood_type, 
-        bu.volume, 
-        d.donation_date, 
-        bu.status AS blood_status
-    FROM 
-        donations d
-    JOIN 
-        blood_units bu ON d.unit_id = bu.unit_id
-    WHERE 
-        d.donor_id = ?";
-$stmt_donations = $conn->prepare($sql_donations);
-$stmt_donations->bind_param("i", $user_id);
-$stmt_donations->execute();
-$result_donations = $stmt_donations->get_result();
-$donations = $result_donations->fetch_all(MYSQLI_ASSOC);
-$stmt_donations->close();
+if (isset($_POST['submit'])) {
+    echo "<script>alert('Are you sure you want to add a new DONOR?')</script>";
 
-// Fetch donor profile information
-$sql_profile = "
-    SELECT 
-        username, 
-        email, 
-        phone_number, 
-        address
-    FROM 
-        users
-    WHERE 
-        user_id = ?";
-$stmt_profile = $conn->prepare($sql_profile);
-$stmt_profile->bind_param("i", $user_id);
-$stmt_profile->execute();
-$result_profile = $stmt_profile->get_result();
-$profile = $result_profile->fetch_assoc();
-$stmt_profile->close();
+    $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
+    $username = strtoupper($username);
+    $email = $_POST['email'];
+    $gender = $_POST['gender'];
+    $blood_group = $_POST['blood_group'];
+    $address = $_POST['address'];
+    $number = $_POST['number'];
 
-$conn->close();
+    if (empty($username)) {
+        $showalertusername = true;
+    } elseif (empty($email)) {
+        $showalertemail = true;
+    } elseif (empty($gender)) {
+        $showalertgender = true;
+    } elseif (empty($blood_group)) {
+        $showalertblood_group = true;
+    } elseif (empty($address)) {
+        $showalertaddress = true;
+    } elseif (empty($number)) {
+        $showalertnumber = true;
+    } else {
+        $existsql = "SELECT * FROM donors WHERE donor_name='$username' OR donor_email='$email' OR donor_number='$number'";
+        $existresult = mysqli_query($conn, $existsql);
+        $existuser = mysqli_num_rows($existresult);
+        if ($existuser) {
+            $showalert = true;
+        } else {
+            $sql = "INSERT INTO donors (donor_name, donor_email, donor_number, donor_address, donor_gender, donor_blood_group) 
+                    VALUES ('$username', '$email', '$number', '$address', '$gender', '$blood_group')";
+            mysqli_query($conn, $sql);
+            $showsuccess = true;
+        }
+    }
+}
+
 ?>
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donor Dashboard</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .container {
-            max-width: 900px;
-            padding: 15px;
-            margin: auto;
-        }
-        .form-section {
-            margin-bottom: 30px;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .form-section h2 {
-            border-bottom: 2px solid #e74c3c;
-            padding-bottom: 10px;
-        }
-        .logout-btn {
-            float: right;
-            margin-top: -10px;
-        }
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: rgba(231, 76, 60, 0.1);
-        }
-        .table-striped tbody tr:nth-of-type(even) {
-            background-color: rgba(231, 76, 60, 0.05);
-        }
-    </style>
-</head>
-<body>
+  <head>
+    <title>Donor Management</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body class="container-fluid">
+    <?php
+      if ($showsuccess) {
+        echo "<div class='alert alert-success'><strong>Success!</strong> Donor information successfully inserted</div>";
+      }
+      if ($showalert) {
+        echo "<div class='alert alert-danger'><strong>Error!</strong> Username, email, or number already exists</div>";
+      }
+      if ($showalertusername) {
+        echo "<div class='alert alert-danger'><strong>Error!</strong> Enter username</div>";
+      }
+      if ($showalertemail) {
+        echo "<div class='alert alert-danger'><strong>Error!</strong> Enter email</div>";
+      }
+      if ($showalertgender) {
+        echo "<div class='alert alert-danger'><strong>Error!</strong> Enter gender</div>";
+      }
+      if ($showalertaddress) {
+        echo "<div class='alert alert-danger'><strong>Error!</strong> Enter address</div>";
+      }
+      if ($showalertnumber) {
+        echo "<div class='alert alert-danger'><strong>Error!</strong> Enter number</div>";
+      }
+    ?>
+
     <div class="container">
-        <h1 class="h3 mb-3 fw-normal text-center">
-            Donor Dashboard
+      <h1 class="text-center text-info mt-3">Add Donors</h1>
+      <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+        <div class="form-group">
+          <label for="username">Name:</label>
+          <input type="text" name="username" class="form-control" placeholder="Name">
+          <label for="email">Email:</label>
+          <input type="email" name="email" class="form-control" placeholder="Email">
+          
+          <div class="form-group">
+            <label for="gender">Gender:</label>
+            <select name="gender" class="form-control" id="Gender">
+            <option>Select one</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="blood_group">Blood Group:</label>
+            <select name="blood_group" class="form-control" id="BloodGroup">
+              <option>Select one</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
+          </div>
+          
+          <label for="address">Address:</label>
+          <input type="text" name="address" class="form-control" placeholder="Address">
+          <label for="number">Number:</label>
+          <input type="text" name="number" class="form-control" placeholder="Number">
+          <br>
+          <input type="submit" name="submit" value="Submit" class="form-control btn btn-outline-info">
+        </div>
+      </form>
+      <a href="donorlist.php" class="form-control btn btn-outline-info">See Donors</a>
+      <br><br>
             <form class="logout-btn" method="post" action="/sections/auth/logout.php">
-                <button class="btn btn-danger" type="submit">Logout</button>
+                <button style="text-align: center;"  value="Submit" class="form-control btn btn-outline-info" class="btn btn-danger" type="submit">Logout</button>
             </form>
         </h1>
-
-        <!-- Donor Profile -->
-        <div class="form-section">
-            <h2 class="h4 mb-3">Profile Information</h2>
-            <p><strong>Username:</strong> <?php echo htmlspecialchars($profile['username']); ?></p>
-            <p><strong>Email:</strong> <?php echo htmlspecialchars($profile['email']); ?></p>
-            <p><strong>Phone Number:</strong> <?php echo htmlspecialchars($profile['phone_number']); ?></p>
-            <p><strong>Address:</strong> <?php echo htmlspecialchars($profile['address']); ?></p>
-        </div>
-
-        <!-- View Past Donations -->
-        <div class="form-section">
-            <h2 class="h4 mb-3">Past Donations</h2>
-            <?php if (count($donations) > 0): ?>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">Donation ID</th>
-                            <th scope="col">Blood Type</th>
-                            <th scope="col">Volume (mL)</th>
-                            <th scope="col">Donation Date</th>
-                            <th scope="col">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($donations as $donation): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($donation['donation_id']); ?></td>
-                                <td><?php echo htmlspecialchars($donation['blood_type']); ?></td>
-                                <td><?php echo htmlspecialchars($donation['volume']); ?></td>
-                                <td><?php echo htmlspecialchars($donation['donation_date']); ?></td>
-                                <td><?php echo htmlspecialchars($donation['blood_status']); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <p>No donations found.</p>
-            <?php endif; ?>
-        </div>
+      <br><br><br>
     </div>
-</body>
+    <!-- Optional JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
 </html>
