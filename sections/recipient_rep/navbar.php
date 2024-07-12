@@ -6,7 +6,7 @@ include '../../config/database.php';
 
 // Check if user is logged in and has the recipient role
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient') {
-    header("Location: ../../auth/login.php");
+    header("Location: ../auth/login.php");
     exit;
 }
 

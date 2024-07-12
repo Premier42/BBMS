@@ -3,7 +3,7 @@ session_start();
 require_once '../../config/database.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'hospital_rep') {
-    header("Location: ../../auth/login.php");
+    header("Location: ../auth/login.php");
     exit;
 }
 
