@@ -508,7 +508,7 @@ $conn->close();
         }
 
         // Initialize by showing the first section
-        //showSection('users');
+        showSection('users');
     </script>
     <!-- JS ending here -->
 </body>
