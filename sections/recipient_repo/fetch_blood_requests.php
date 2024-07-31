@@ -36,6 +36,18 @@ if ($result) {
             echo "<td>" . htmlspecialchars($row['volume']) . "</td>";
             echo "<td>" . htmlspecialchars($row['request_date']) . "</td>";
             echo "<td>" . ucfirst(htmlspecialchars($row['status'])) . "</td>";
+            echo "<td>";
+                            // Update Request form
+                            echo "<form method='post' action='update_blood_request.php' class='d-inline'>";
+                            echo "<input type='hidden' name='request_id' value='" . htmlspecialchars($row['request_id']) . "'>";
+                            echo "<button class='btn btn-warning btn-sm' type='submit'>Update</button>";
+                            echo "</form>";
+                            // Remove Request form
+                            echo "<form method='post' action='remove_blood_request.php' class='d-inline' onsubmit='return confirm(\"Are you sure you want to remove this blood request?\");'>";
+                            echo "<input type='hidden' name='request_id' value='" . htmlspecialchars($row['request_id']) . "'>";
+                            echo "<button class='btn btn-danger btn-sm' type='submit'>Remove</button>";
+                            echo "</form>";
+                            echo "</td>";
             echo "</tr>";
         }
     } else {
