@@ -367,13 +367,14 @@ $conn->close();
                                 <td><?php echo htmlspecialchars($result['test_date']); ?></td>
                                 <td><?php echo htmlspecialchars($result['test_result']); ?></td>
                                 <td>
-                                    <!-- Update Blood test result form -->
-                                    <form method="post" action="update_blood_test.php" class="d-inline">
-                                        <input type="hidden" name="unit_id" value="<?php echo htmlspecialchars($unit['unit_id']); ?>">
+                                    <form method="get" action="update_blood_test.php" class="d-inline">
+                                        <input type="hidden" name="unit_id" value="<?php echo htmlspecialchars($result['unit_id']); ?>">
                                         <button class="btn btn-warning btn-sm" type="submit">Update</button>
                                     </form>
+
+
                                     <!-- Remove Blood test form -->
-                                    <form method="post" action="remove_blood_test.php" class="d-inline" onsubmit="return confirm('Are you sure you want to remove this blood unit?');">
+                                    <form method="post" action="remove_blood_test.php" class="d-inline" onsubmit="return confirm('Are you sure you want to remove this blood test result?');">
                                         <input type="hidden" name="unit_id" value="<?php echo htmlspecialchars($unit['unit_id']); ?>">
                                         <button class="btn btn-danger btn-sm" type="submit">Remove</button>
                                     </form>

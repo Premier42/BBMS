@@ -243,13 +243,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient') {
             <i class="fas fa-home"></i> Dashboard
         </a>
         <a href="#" onclick="showSection('requestForBlood')">
-            <i class="fas fa-warehouse"></i> Request for Blood
+            <i class="fa-solid fa-droplet"></i> Request for Blood
         </a>
         <a href="#" onclick="showSection('bloodRequests')">
-            <i class="fas fa-history"></i> Blood Requests History
+            <i class="fa-solid fa-notes-medical"></i>Blood Requests History
         </a>
         <a href="#" onclick="showSection('inventory-section')">
-            <i class="fas fa-warehouse"></i> Available Blood
+            <i class="fas fa-vials"></i> Available Blood
         </a>
 
     </div>
@@ -335,6 +335,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'recipient') {
                                 <th scope="col">Volume (ml)</th>
                                 <th scope="col">Request Date</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
