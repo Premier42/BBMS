@@ -53,7 +53,8 @@ if ($result_inventory->num_rows > 0) {
 
 
 $conn->close();
-?>
+?>//
+
 
 <!-- HTML Part -->
 
@@ -65,6 +66,7 @@ $conn->close();
     <title>Admin Dashboard</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 
     <!-- CSS starting from here -->
 
@@ -259,6 +261,7 @@ $conn->close();
             font-weight: bold; 
             text-transform: uppercase; 
         }
+
     }
 </style>
 <!-- CSS ending here -->
@@ -282,9 +285,9 @@ $conn->close();
         <a href="#requests" onclick="showSection('requests')">
             <i class="fas fa-tint"></i>Manage Requests
         </a>
-        <a href="#inventory" onclick="showSection('inventory')">
-            <i class="fas fa-warehouse"></i>Manage Inventory
-        </a>
+       <!-- <a href="#inventory" onclick="showSection('inventory')">
+            <i class="fas fa-warehouse"></i> Inventory
+        </a>  -->
     </div>
 
     <div class="content">
@@ -323,10 +326,6 @@ $conn->close();
                         <td><?php echo htmlspecialchars($user['role']); ?></td>
                         <td><?php echo $user['approved'] ? '1' : '0'; ?></td>
                         <td>
-                            <form method="post" action="edit_user.php" class="d-inline">
-                                <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['user_id']); ?>">
-                                <button class="btn btn-warning btn-sm" type="submit">Edit</button>
-                            </form>
                             <form method="post" action="delete_user.php" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this user?');">
                                 <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['user_id']); ?>">
                                 <button class="btn btn-danger btn-sm" type="submit">Delete</button>
@@ -387,107 +386,88 @@ $conn->close();
         </div>
   <!-- Manage Donation section ending here -->
 
+         <!-- Manage Requests Section -->
 
-        <!-- Manage Requests Section -->
+         <div class="form-section" id="requests-section">
+    <h2 class="h4 mb-3">Manage Requests</h2>
+    <?php if (count($requests) > 0): ?>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Request ID</th>
+                    <th scope="col">Recipient ID</th>
+                    <th scope="col">Blood Type</th>
+                    <th scope="col">Volume (mL)</th>
+                    <th scope="col">Request Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($requests as $request): ?>
+                    <tr data-request-id="<?php echo htmlspecialchars($request['request_id']); ?>">
+                        <td><?php echo htmlspecialchars($request['request_id']); ?></td>
+                        <td><?php echo htmlspecialchars($request['recipient_id']); ?></td>
+                        <td><?php echo htmlspecialchars($request['blood_type']); ?></td>
+                        <td><?php echo htmlspecialchars($request['volume']); ?></td>
+                        <td><?php echo htmlspecialchars($request['request_date']); ?></td>
+                        <td class="status-column"><?php echo htmlspecialchars($request['status']); ?></td>
+                        <td>
+                            <button class="btn btn-success btn-sm approve-btn" type="button">Approve</button>
+                            <button class="btn btn-warning btn-sm reject-btn" type="button">Reject</button>
+                            <button class="btn btn-info btn-sm fulfill-btn" type="button">Fulfill</button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p>No requests found.</p>
+    <?php endif; ?>
+</div>
 
-<div class="form-section" id="requests-section">
-            <h2 class="h4 mb-3">Manage Requests</h2>
-            <?php if (count($requests) > 0): ?>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">Request ID</th>
-                            <th scope="col">Recipient ID</th>
-                            <th scope="col">Blood Type</th>
-                            <th scope="col">Volume (mL)</th>
-                            <th scope="col">Request Date</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($requests as $request): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($request['request_id']); ?></td>
-                                <td><?php echo htmlspecialchars($request['recipient_id']); ?></td>
-                                <td><?php echo htmlspecialchars($request['blood_type']); ?></td>
-                                <td><?php echo htmlspecialchars($request['volume']); ?></td>
-                                <td><?php echo htmlspecialchars($request['request_date']); ?></td>
-                                <td><?php echo htmlspecialchars($request['status']); ?></td>
-                                <td>
-                                    <form method="post" action="approve_request.php" class="d-inline">
-                                        <input type="hidden" name="request_id" value="<?php echo htmlspecialchars($request['request_id']); ?>">
-                                        <button class="btn btn-success btn-sm" type="submit">Approve</button>
-                                    </form>
-                                    <form method="post" action="reject_request.php" class="d-inline">
-                                        <input type="hidden" name="request_id" value="<?php echo htmlspecialchars($request['request_id']); ?>">
-                                        <button class="btn btn-warning btn-sm" type="submit">Reject</button>
-                                    </form>
-                                    <form method="post" action="fulfill_request.php" class="d-inline">
-                                        <input type="hidden" name="request_id" value="<?php echo htmlspecialchars($request['request_id']); ?>">
-                                        <button class="btn btn-info btn-sm" type="submit">Fulfill</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <p>No requests found.</p>
-            <?php endif; ?>
-        </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    function updateStatus(button, url, newStatus) {
+        var row = button.closest('tr');
+        var request_id = row.data('request-id');
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { request_id: request_id },
+            success: function(response) {
+                var data = JSON.parse(response);
+                if (data.success) {
+                    row.find('.status-column').text(newStatus);
+                } else {
+                    alert(data.message);
+                }
+            },
+            error: function() {
+                alert('An error occurred while processing the request.');
+            }
+        });
+    }
+
+    $('.approve-btn').click(function() {
+        updateStatus($(this), 'approve_request.php', 'Approved');
+    });
+
+    $('.reject-btn').click(function() {
+        updateStatus($(this), 'reject_request.php', 'Rejected');
+    });
+
+    $('.fulfill-btn').click(function() {
+        updateStatus($(this), 'fulfill_request.php', 'Fulfilled');
+    });
+});
+
+</script>
+
         <!-- Manage Request section ending here -->
-
-
-        <!-- Manage Inventory Section -->
-
-        <div class="form-section" id="inventory-section">
-            <h2 class="h4 mb-3">Manage Inventory</h2>
-            <!--<a href="add_inventory.php" class="btn btn-primary mb-3">Add to Inventory</a> -->
-            <form method="get" action="add_inventory.php">
-        <button type="submit" class="custom-btn btn-primary mb-3">Add to Inventory</button>
-    </form>
-            <?php if (count($inventory) > 0): ?>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">Inventory ID</th>
-                            <th scope="col">Unit Id</th>
-                            <th scope="col">Inventory Manager Id</th>
-                            <th scope="col">Received Date</th>
-                            <th scope="col">Expiration Date</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($inventory as $item): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($item['inventory_id']); ?></td>
-                                <td><?php echo htmlspecialchars($item['unit_id']); ?></td>
-                                <td><?php echo htmlspecialchars($item['inventory_manager_id']); ?></td>
-                                <td><?php echo htmlspecialchars($item['received_date']); ?></td>
-                                <td><?php echo htmlspecialchars($item['expiration_date']); ?></td>
-                                <td><?php echo htmlspecialchars($item['status']); ?></td>
-                                <td>
-                                    <form method="post" action="update_inventory.php" class="d-inline">
-                                        <input type="hidden" name="inventory_id" value="<?php echo htmlspecialchars($item['inventory_id']); ?>">
-                                        <button class="btn btn-warning btn-sm" type="submit">Update</button>
-                                    </form>
-                                    <form method="post" action="remove_inventory.php" class="d-inline" onsubmit="return confirm('Are you sure you want to remove this item from inventory?');">
-                                        <input type="hidden" name="inventory_id" value="<?php echo htmlspecialchars($item['inventory_id']); ?>">
-                                        <button class="btn btn-danger btn-sm" type="submit">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <p>No items found in inventory.</p>
-            <?php endif; ?>
-        </div>
-        <!-- Manage Inventory section ending here -->
+        
     </div>
 
 
