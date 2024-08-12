@@ -2,7 +2,7 @@
 session_start();
 require_once '../../config/database.php';
 
-// Check if the user is logged in and has the inventory_manager role
+// Check if the user is logged in and has the lab_technician role
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'lab_technician') {
     header("Location: ../auth/login.php");
     exit;
@@ -18,12 +18,31 @@ if ($result_blood_units->num_rows > 0) {
     $blood_units = [];
 }
 
+// Fetch blood test results
+$sql_blood_test_results = "SELECT * FROM blood_test_results";
+$result_blood_test_results = $conn->query($sql_blood_test_results);
+
+if ($result_blood_test_results->num_rows > 0) {
+    $blood_test_results = $result_blood_test_results->fetch_all(MYSQLI_ASSOC);
+} else {
+    $blood_test_results = [];
+}
+
+$sql_blood_units = "SELECT bu.*, btr.test_result 
+                    FROM blood_units bu 
+                    LEFT JOIN blood_test_results btr 
+                    ON bu.unit_id = btr.unit_id";
+$result_blood_units = $conn->query($sql_blood_units);
+
+if ($result_blood_units->num_rows > 0) {
+    $blood_units = $result_blood_units->fetch_all(MYSQLI_ASSOC);
+} else {
+    $blood_units = [];
+}
+
 
 $conn->close();
 ?>
-
-<!-- HTML Part -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,7 +54,6 @@ $conn->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- CSS starting from here -->
-
     <style>
         /* Global Styles */
         body {
@@ -244,20 +262,20 @@ $conn->close();
         }
     </style>
     <!-- CSS ending here -->
-
 </head>
 
 <body>
 
     <!-- Navbar link -->
-
     <div class="sidebar">
         <div class="sidebar-header">
             <h2 class="system-name"><i class="fas fa-hospital"></i> CRUDCare</h2>
         </div>
-
-        <a href="#inventory" onclick="showSection('blood_test_result')">
-            <i class="fas fa-warehouse"></i> Blood Test Result
+        <a href="#blood-units" onclick="showSection('blood-units')">
+            <i class="fas fa-warehouse"></i> Blood Units
+        </a>
+        <a href="#blood-test-results" onclick="showSection('blood-test-results')">
+            <i class="fas fa-vials"></i> Blood Test Results
         </a>
     </div>
 
@@ -269,13 +287,11 @@ $conn->close();
             </form>
         </h1>
 
-
         <!-- Manage Blood Units Section -->
         <div class="form-section" id="blood-units-section">
             <h2 class="h4 mb-3">Blood Units</h2>
-            <!-- Add to Blood Units form -->
-            <form method="get" action="add_blood_unit.php">
-                <button type="submit" class="custom-btn btn-primary mb-3">Add Blood Unit</button>
+            <form method="get" action="add_blood_units.php">
+                <button type="submit" class="custom-btn btn-primary mb-3">Add Blood Units</button>
             </form>
 
             <!-- Display blood units in a table -->
@@ -288,6 +304,7 @@ $conn->close();
                             <th scope="col">Volume</th>
                             <th scope="col">Expiration Date</th>
                             <th scope="col">Status</th>
+                            <th scope="col">Test Result</th>
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
@@ -299,7 +316,14 @@ $conn->close();
                                 <td><?php echo htmlspecialchars($unit['volume']); ?></td>
                                 <td><?php echo htmlspecialchars($unit['expiration_date']); ?></td>
                                 <td><?php echo htmlspecialchars($unit['status']); ?></td>
+                                <td><?php echo htmlspecialchars($unit['test_result'] ?: 'Not Tested'); ?></td>
                                 <td>
+                                    <!-- Add Blood Test form -->
+                                    <form method="post" action="add_blood_test_results.php" class="d-inline">
+                                        <input type="hidden" name="unit_id" value="<?php echo htmlspecialchars($unit['unit_id']); ?>">
+                                        <button class="btn btn-primary btn-sm" type="submit" <?php if (!empty($unit['test_result'])) echo 'disabled'; ?>>Add Blood Test</button>
+                                    </form>
+
                                     <!-- Update Blood Unit form -->
                                     <form method="post" action="update_blood_unit.php" class="d-inline">
                                         <input type="hidden" name="unit_id" value="<?php echo htmlspecialchars($unit['unit_id']); ?>">
@@ -319,34 +343,80 @@ $conn->close();
                 <p>No blood units found.</p>
             <?php endif; ?>
         </div>
+
+        <!-- Blood Test Results Section -->
+        <div class="form-section" id="blood-test-results-section">
+            <h2 class="h4 mb-3">Blood Test Results</h2>
+            <!-- Display blood test results in a table -->
+            <?php if (count($blood_test_results) > 0) : ?>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Result ID</th>
+                            <th scope="col">Unit ID</th>
+                            <th scope="col">Test Date</th>
+                            <th scope="col">Test Result</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($blood_test_results as $result) : ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($result['result_id']); ?></td>
+                                <td><?php echo htmlspecialchars($result['unit_id']); ?></td>
+                                <td><?php echo htmlspecialchars($result['test_date']); ?></td>
+                                <td><?php echo htmlspecialchars($result['test_result']); ?></td>
+                                <td>
+                                    <form method="get" action="update_blood_test.php" class="d-inline">
+                                        <input type="hidden" name="unit_id" value="<?php echo htmlspecialchars($result['unit_id']); ?>">
+                                        <button class="btn btn-warning btn-sm" type="submit">Update</button>
+                                    </form>
+
+
+                                    <!-- Remove Blood test form -->
+                                    <form method="post" action="remove_blood_test.php" class="d-inline" onsubmit="return confirm('Are you sure you want to remove this blood test result?');">
+                                        <input type="hidden" name="unit_id" value="<?php echo htmlspecialchars($unit['unit_id']); ?>">
+                                        <button class="btn btn-danger btn-sm" type="submit">Remove</button>
+                                    </form>
+
+                                </td>
+                            </tr>
+
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else : ?>
+                <p>No blood test results found.</p>
+            <?php endif; ?>
+        </div>
     </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    // Function to show a specific section and hide others
-    function showSection(sectionId) {
-    var sections = document.querySelectorAll('.form-section');
-    sections.forEach(function(section) {
-    section.classList.remove('active');
-    });
-    var activeSection = document.getElementById(sectionId + '-section');
-    if (activeSection) {
-    activeSection.classList.add('active');
-    }
-    }
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to show a specific section and hide others
+            function showSection(sectionId) {
+                var sections = document.querySelectorAll('.form-section');
+                sections.forEach(function(section) {
+                    section.classList.remove('active');
+                });
+                var activeSection = document.getElementById(sectionId + '-section');
+                if (activeSection) {
+                    activeSection.classList.add('active');
+                }
+            }
 
-    // Show the default section on page load
-    showSection('blood-units');
+            // Show the default section on page load
+            showSection('blood-units');
 
-    // Attach click event listeners to sidebar links
-    document.querySelectorAll('.sidebar a').forEach(function(link) {
-    link.addEventListener('click', function(event) {
-    event.preventDefault();
-    var sectionId = this.getAttribute('href').substring(1); // Get the section ID from href
-    showSection(sectionId);
-    });
-    });
-    });
+            // Attach click event listeners to sidebar links
+            document.querySelectorAll('.sidebar a').forEach(function(link) {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    var sectionId = this.getAttribute('href').substring(1); // Get the section ID from href
+                    showSection(sectionId);
+                });
+            });
+        });
     </script>
 
 </body>
