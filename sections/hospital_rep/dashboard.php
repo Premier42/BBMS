@@ -52,57 +52,212 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hospital Representative Dashboard</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- CSS starting from here -->
+
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .container {
-            max-width: 900px;
-            padding: 15px;
-            margin: auto;
-        }
-        .form-section {
-            margin-bottom: 30px;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .form-section h2 {
-            border-bottom: 2px solid #e74c3c;
-            padding-bottom: 10px;
-        }
-        .logout-btn {
-            float: right;
-            margin-top: -10px;
-        }
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: rgba(231, 76, 60, 0.1);
-        }
-        .table-striped tbody tr:nth-of-type(even) {
-            background-color: rgba(231, 76, 60, 0.05);
-        }
-        .btn-edit {
-            background-color: #f0ad4e;
-            color: white;
-        }
-        .btn-edit:hover {
-            background-color: #ec971f;
-            color: white;
-        }
-        .btn-cancel {
-            background-color: #d9534f;
-            color: white;
-        }
-        .btn-cancel:hover {
-            background-color: #c9302c;
-            color: white;
-        }
-    </style>
+/* Global Styles */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: indianred;
+    padding-top: 20px;
+    transition: 0.3s;
+}
+.sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #f8f9fa;
+    display: block;
+    transition: 0.3s;
+}
+.sidebar a i {
+    margin-right: 10px;
+}
+.sidebar a:hover {
+    background-color: black;
+}
+
+/* Content Area Styles */
+.content {
+    margin-left: 250px;
+    padding: 20px;
+    overflow: hidden; /* Ensure content doesn't overflow */
+}
+
+/* Form Section Styles */
+.form-section {
+    display: none;
+    margin-bottom: 30px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.form-section.active {
+    display: block;
+}
+.form-section h2 {
+    border-bottom: 2px solid #e74c3c;
+    padding-bottom: 10px;
+}
+
+/* Table Styles */
+.table {
+    width: 100%;
+    min-width: 800px;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+.table th, .table td {
+    padding: 10px;
+    text-align: left;
+    vertical-align: middle;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px solid #dee2e6;
+}
+.table th {
+    background-color: #e74c3c;
+    color: #fff;
+    font-weight: bold;
+}
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(231, 76, 60, 0.1);
+}
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: rgba(231, 76, 60, 0.05);
+}
+
+/* Logout Button Styles */
+.logout-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    text-align: center;
+}
+.logout-btn button {
+    width: 100%; /* Adjusted to fit button */
+    padding: 10px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.logout-btn button:hover {
+    background-color: #c82333;
+}
+
+/* Button Styles */
+.custom-btn {
+    background-color: lightcoral;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+.custom-btn:hover {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+}
+.custom-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(38, 143, 255, 0.5);
+}
+.custom-btn:active {
+    background-color: #dc3545;
+    transform: translateY(0);
+}
+
+/* Sidebar Header Styles */
+.sidebar-header {
+    text-align: center;
+    padding: 20px;
+    color: white;
+    border-bottom: 1px solid #495057;
+}
+.system-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        margin-bottom: 20px; /* Space below the sidebar */
+    }
+    .sidebar a {
+        float: left;
+    }
+    .content {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar a {
+        text-align: center;
+        float: none;
+    }
+    .table {
+        width: 100%;
+        min-width: 100%;
+    }
+    .table th, .table td {
+        display: block;
+        width: 100%;
+        text-align: right;
+    }
+    .table th {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    .table td:before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+}
+
+</style>
 </head>
 <body>
-    <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+    <div class="sidebar-header">
+            <h2 class="system-name"><i class="fas fa-hospital"></i> CRUDCare</h2>
+      </div>
+        <a href="#" class="nav-link" data-section="submit-request">Submit Blood Request</a>
+        <a href="#" class="nav-link" data-section="track-requests">Track Blood Requests</a>
+        <a href="#" class="nav-link" data-section="blood-availability">Blood Availability</a>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
         <h1 class="h3 mb-3 fw-normal text-center">
             Hospital Representative Dashboard
             <form class="logout-btn" method="post" action="/sections/auth/logout.php">
@@ -118,8 +273,8 @@ $conn->close();
             <strong>Representative Phone:</strong> <?php echo htmlspecialchars($info['rep_phone']); ?><br>
         </div>
 
-        <!-- Submit and Track Blood Requests -->
-        <div class="form-section">
+        <!-- Submit Blood Request Section -->
+        <div id="submit-request" class="form-section active">
             <h2 class="h4 mb-3">Submit Blood Request</h2>
             <form method="post" action="submit_request.php">
                 <div class="form-floating mb-3">
@@ -144,7 +299,8 @@ $conn->close();
             </form>
         </div>
 
-        <div class="form-section">
+        <!-- Track Blood Requests Section -->
+        <div id="track-requests" class="form-section">
             <h2 class="h4 mb-3">Track Blood Requests</h2>
             <?php if (count($requests) > 0): ?>
                 <table class="table table-striped">
@@ -179,8 +335,8 @@ $conn->close();
             <?php endif; ?>
         </div>
 
-        <!-- Communicate with Inventory Managers -->
-        <div class="form-section">
+        <!-- Blood Availability Section -->
+        <div id="blood-availability" class="form-section">
             <h2 class="h4 mb-3">Blood Availability</h2>
             <?php if (count($inventory) > 0): ?>
                 <table class="table table-striped">
@@ -197,12 +353,32 @@ $conn->close();
                                 <td><?php echo htmlspecialchars($item['available_units']); ?></td>
                             </tr>
                         <?php endforeach; ?>
-                    </tbody>
+                                        </tbody>
                 </table>
             <?php else: ?>
-                <p>No available blood units found.</p>
+                <p>No blood units available.</p>
             <?php endif; ?>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Sidebar navigation click event
+            $('.nav-link').on('click', function (e) {
+                e.preventDefault();
+                var targetSection = $(this).data('section');
+                
+                // Hide all sections
+                $('.form-section').removeClass('active');
+                
+                // Show the clicked section
+                $('#' + targetSection).addClass('active');
+            });
+
+            // Initially show the first section
+            $('.form-section').first().addClass('active');
+        });
+    </script>
 </body>
 </html>
