@@ -285,9 +285,7 @@ $conn->close();
         <a href="#requests" onclick="showSection('requests')">
             <i class="fas fa-tint"></i>Manage Requests
         </a>
-       <!-- <a href="#inventory" onclick="showSection('inventory')">
-            <i class="fas fa-warehouse"></i> Inventory
-        </a>  -->
+       
     </div>
 
     <div class="content">
@@ -413,8 +411,8 @@ $conn->close();
                         <td><?php echo htmlspecialchars($request['request_date']); ?></td>
                         <td class="status-column"><?php echo htmlspecialchars($request['status']); ?></td>
                         <td>
-                            <button class="btn btn-success btn-sm approve-btn" type="button">Approve</button>
-                            <button class="btn btn-warning btn-sm reject-btn" type="button">Reject</button>
+                            <button class="btn btn-success btn-sm pending-btn" type="button">Pending</button>
+                            <button class="btn btn-warning btn-sm cancel-btn" type="button">Cancel</button>
                             <button class="btn btn-info btn-sm fulfill-btn" type="button">Fulfill</button>
                         </td>
                     </tr>
@@ -451,12 +449,12 @@ $(document).ready(function() {
         });
     }
 
-    $('.approve-btn').click(function() {
-        updateStatus($(this), 'approve_request.php', 'Approved');
+    $('.pending-btn').click(function() {
+        updateStatus($(this), 'pending_request.php', 'Pending');
     });
 
-    $('.reject-btn').click(function() {
-        updateStatus($(this), 'reject_request.php', 'Rejected');
+    $('.cancel-btn').click(function() {
+        updateStatus($(this), 'cancel_request.php', 'Cancelled');
     });
 
     $('.fulfill-btn').click(function() {
