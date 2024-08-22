@@ -17,22 +17,20 @@ if (!isset($_POST['request_id']) || empty(trim($_POST['request_id']))) {
 $request_id = trim($_POST['request_id']);
 
 // Prepare an update statement
-$sql = "UPDATE blood_requests SET status = 'Approved' WHERE request_id = ?";
+$sql = "UPDATE blood_requests SET status = 'pending' WHERE request_id = ?";
 
 if ($stmt = $conn->prepare($sql)) {
     $stmt->bind_param("i", $request_id);
 
     // Attempt to execute the prepared statement
     if ($stmt->execute()) {
-        echo json_encode(['success' => true, 'message' => 'Request approved successfully']);
+        echo json_encode(['success' => true, 'message' => 'Request status set to pending']);
     } else {
-        error_log("Approve Request Error: " . $stmt->error);
-        echo json_encode(['success' => false, 'message' => 'Something went wrong. Please try again later.']);
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $stmt->error]);
     }
     $stmt->close();
 } else {
-    error_log("Approve Request Prepare Error: " . $conn->error);
-    echo json_encode(['success' => false, 'message' => 'Failed to prepare statement.']);
+    echo json_encode(['success' => false, 'message' => 'Error: ' . $conn->error]);
 }
 
 $conn->close();
