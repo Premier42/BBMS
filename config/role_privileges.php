@@ -2,7 +2,7 @@
 
 // Define role privileges
 $rolePrivileges = [
-    'donor' => ['view_dashboard', 'add_donation'],
+    'donor' => ['view_dashboard', 'add_donorlist'],
     'recipient' => ['view_dashboard', 'request_blood'],
     'lab_technician' => ['view_dashboard', 'add_test_result'],
     'inventory_manager' => ['view_dashboard', 'manage_inventory'],
