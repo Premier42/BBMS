@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 07, 2024 at 10:22 AM
+-- Generation Time: Aug 27, 2024 at 11:05 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -48,7 +48,11 @@ INSERT INTO `blood_requests` (`request_id`, `recipient_id`, `blood_type`, `volum
 (5, 3, 'O+', 100000, '2024-07-07', 'pending'),
 (6, 6, 'A+', 200, '2024-07-07', 'pending'),
 (7, 6, 'O+', 1700, '2024-07-07', 'cancelled'),
-(8, 8, 'O+', 777, '2024-07-07', 'pending');
+(8, 8, 'O+', 777, '2024-07-07', 'pending'),
+(9, 6, 'AB+', 999, '2024-07-08', 'pending'),
+(10, 6, 'A-', 500, '2024-07-08', ''),
+(11, 6, 'A-', 1000, '2024-07-08', 'fulfilled'),
+(12, 6, 'O+', 1000, '2024-08-14', 'pending');
 
 -- --------------------------------------------------------
 
@@ -215,23 +219,26 @@ CREATE TABLE `users` (
   `phone_number` varchar(20) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
   `approved` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `age` int(11) DEFAULT NULL,
+  `blood_group` varchar(3) DEFAULT NULL,
+  `gender` enum('male','female','unspecified') DEFAULT 'unspecified'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `password_hash`, `role`, `email`, `phone_number`, `address`, `approved`, `created_at`) VALUES
-(1, 'admin', '$2y$10$qOoEXwVGQu2eaVUoF9xOTOGehS13HlSZ0mN4aMZT63NTOyM4xQ6jO', 'admin', 'admin1@example.com', '1234567890', '123 Admin St, Admin City', 1, '2024-07-07 07:34:11'),
-(2, 'donor', '$2y$10$/ZN44TAqLL.5JLFfH3G52uizAtQjEo80dZiU95vQTL6JqFZ.V6PDy', 'donor', 'donor1@example.com', '2345678901', '456 Donor St, Donor City', 1, '2024-07-07 07:34:11'),
-(3, 'recipient', '$2y$10$N8Cw5Jcub6.R2CAVTLxBNu.77OY7Kg0QksukApIObs93CiSXhGoRm', 'recipient', 'recipient1@example.com', '3456789012', '789 Recipient St, Recipient City', 1, '2024-07-07 07:34:11'),
-(4, 'lab', '$2y$10$ZAyCiKEckHW42Mfu1WYNReCo1O4SzaLYzTkG2UBQWJr83m9jmQa0m', 'lab_technician', 'labtech1@example.com', '4567890123', '321 Lab St, Lab City', 1, '2024-07-07 07:34:11'),
-(5, 'inventory', '$2y$10$fHPt1aS.SQtxLChFHCkh.eQ1KK5jx7UNRORcyLaFbVjQFMbqqZPfi', 'inventory_manager', 'invmanager1@example.com', '5678901234', '654 Inventory St, Inventory City', 1, '2024-07-07 07:34:11'),
-(6, 'hospital', '$2y$10$6nM9cVG0d8HUMedHCkn9o.zg73Y./g19MSakMsxUxRtN7tKJINfBW', 'hospital_rep', 'hosprep1@example.com', '6789012345', '987 Hospital St, Hospital City', 1, '2024-07-07 07:34:11'),
-(7, 'hospital2', '$2y$10$M7rXfmTv6gr1kGH5SMfv7.oU421p4ZmM/SFb.MnmPF2dg44cYNSe6', 'hospital_rep', 'hosrep2@example.com', '123124425', '999 Hospital St, Hospital City', 0, '2024-07-07 08:07:03'),
-(8, 'recipient2', '$2y$10$2SdWa3FtzEKVnBelGtnMaOZtZn/2OM557LBniirNs7Fo/8GhKnAkq', 'recipient', 'recipient2@example.com', '12392370', '777 Recipient St, Recipient City', 1, '2024-07-07 08:11:59'),
-(9, 'admin2', '$2y$10$vriJFFCNuqMnMZO0Sdub5OU5u7CbWcd.EtP5M69/eL52LomUj5Umi', 'admin', 'admin2@example.com', '442423423', '111 Admin St, Admin City', 0, '2024-07-07 08:14:15');
+INSERT INTO `users` (`user_id`, `username`, `password_hash`, `role`, `email`, `phone_number`, `address`, `approved`, `created_at`, `age`, `blood_group`, `gender`) VALUES
+(1, 'admin', '$2y$10$qOoEXwVGQu2eaVUoF9xOTOGehS13HlSZ0mN4aMZT63NTOyM4xQ6jO', 'admin', 'admin1@example.com', '1234567890', '123 Admin St, Admin City', 1, '2024-07-07 07:34:11', NULL, NULL, 'unspecified'),
+(2, 'donor', '$2y$10$/ZN44TAqLL.5JLFfH3G52uizAtQjEo80dZiU95vQTL6JqFZ.V6PDy', 'donor', 'donor1@example.com', '2345678901', '456 Donor St, Donor City', 1, '2024-07-07 07:34:11', NULL, NULL, 'unspecified'),
+(3, 'recipient', '$2y$10$N8Cw5Jcub6.R2CAVTLxBNu.77OY7Kg0QksukApIObs93CiSXhGoRm', 'recipient', 'recipient1@example.com', '3456789012', '789 Recipient St, Recipient City', 1, '2024-07-07 07:34:11', NULL, NULL, 'unspecified'),
+(4, 'lab', '$2y$10$ZAyCiKEckHW42Mfu1WYNReCo1O4SzaLYzTkG2UBQWJr83m9jmQa0m', 'lab_technician', 'labtech1@example.com', '4567890123', '321 Lab St, Lab City', 1, '2024-07-07 07:34:11', NULL, NULL, 'unspecified'),
+(5, 'inventory', '$2y$10$fHPt1aS.SQtxLChFHCkh.eQ1KK5jx7UNRORcyLaFbVjQFMbqqZPfi', 'inventory_manager', 'invmanager1@example.com', '5678901234', '654 Inventory St, Inventory City', 1, '2024-07-07 07:34:11', NULL, NULL, 'unspecified'),
+(6, 'hospital', '$2y$10$6nM9cVG0d8HUMedHCkn9o.zg73Y./g19MSakMsxUxRtN7tKJINfBW', 'hospital_rep', 'hosprep1@example.com', '6789012345', '987 Hospital St, Hospital City', 1, '2024-07-07 07:34:11', NULL, NULL, 'unspecified'),
+(7, 'hospital2', '$2y$10$M7rXfmTv6gr1kGH5SMfv7.oU421p4ZmM/SFb.MnmPF2dg44cYNSe6', 'hospital_rep', 'hosrep2@example.com', '123124425', '999 Hospital St, Hospital City', 0, '2024-07-07 08:07:03', NULL, NULL, 'unspecified'),
+(8, 'recipient2', '$2y$10$2SdWa3FtzEKVnBelGtnMaOZtZn/2OM557LBniirNs7Fo/8GhKnAkq', 'recipient', 'recipient2@example.com', '12392370', '777 Recipient St, Recipient City', 1, '2024-07-07 08:11:59', NULL, NULL, 'unspecified'),
+(9, 'admin2', '$2y$10$vriJFFCNuqMnMZO0Sdub5OU5u7CbWcd.EtP5M69/eL52LomUj5Umi', 'admin', 'admin2@example.com', '442423423', '111 Admin St, Admin City', 0, '2024-07-07 08:14:15', NULL, NULL, 'unspecified');
 
 --
 -- Indexes for dumped tables
@@ -313,7 +320,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `blood_requests`
 --
 ALTER TABLE `blood_requests`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `blood_test_results`
