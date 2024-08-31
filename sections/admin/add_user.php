@@ -92,6 +92,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $param_approved = $approved;
             if ($stmt->execute()) {
                 $success_message = "User added successfully.";
+
+                // Display the success message for 3 seconds before redirecting
+                echo "<script>alert('$success_message'); window.location.href='dashboard.php';</script>";
+                exit;
+                
                 $username = $password = $email = $phone_number = $address = $role = $approved = "";
             } else {
                 echo "Something went wrong. Please try again later.";

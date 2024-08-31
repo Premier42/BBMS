@@ -28,8 +28,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->execute()) {
             // Redirect to dashboard with success message
             $_SESSION['success_message'] = "Donation cancelled successfully.";
-            header("Location: dashboard.php#donations");
+
+            header("Location: dashboard.php");
             exit;
+
+            
         } else {
             echo "Something went wrong. Please try again later.";
         }
